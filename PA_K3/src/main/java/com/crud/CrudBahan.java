@@ -10,7 +10,7 @@ import java.util.Iterator;
  *
  * @author ammar
  */
-public class CrudBahan extends Crud<BahanBaku> implements CrudInterface<BahanBaku>{
+public class CrudBahan extends Crud<BahanBaku> {
     
     public void tambahBahan(BahanBaku bahanBaru) {
         tambah(bahanBaru);

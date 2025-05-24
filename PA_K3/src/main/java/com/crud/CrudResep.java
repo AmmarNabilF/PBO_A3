@@ -10,7 +10,7 @@ import com.model.Resep;
  *
  * @author ammar
  */
-public class CrudResep extends Crud<Resep> implements CrudInterface<Resep> {
+public class CrudResep extends Crud<Resep> {
     
     public void catatResep(Resep resep){
         tambah(resep);

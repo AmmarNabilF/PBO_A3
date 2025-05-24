@@ -9,7 +9,7 @@ import java.util.Iterator;
  *
  * @author ammar
  */
-public class CrudProduk extends Crud<Produk> implements CrudInterface<Produk> {
+public class CrudProduk extends Crud<Produk> {
     
     public void simpanProduk(Produk produk){
         tambah(produk);

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package com;
 import com.auth.auth;
 import com.crud.CrudProduk;
@@ -15,15 +11,8 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import com.model.Transaksi;
-/**
- *
- * @author ACER
- */
-public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
+public class Main {
     public static void main(String[] args) {
         // cek koneksi database
         DB db = new DB();
@@ -31,6 +20,7 @@ public class Main {
             System.out.println("Koneksi ke database berhasil!");
         } else {
             System.out.println("Koneksi ke database gagal!");
+            return;
         }
         Scanner input = new Scanner(System.in);
         int login = 3;
