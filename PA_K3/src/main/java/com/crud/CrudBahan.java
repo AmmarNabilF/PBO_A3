@@ -40,5 +40,5 @@ public class CrudBahan extends Crud<BahanBaku> {
         }
         return false;   
     }
-    
+
 }

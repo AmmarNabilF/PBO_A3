@@ -25,29 +25,59 @@ public class Main {
         Scanner input = new Scanner(System.in);
         int login = 3;
         
-        while (login > 0){
-            System.out.println("\n>>> !!Masukkan Akun!! <<<");
-            System.out.print("> Email: ");
-            String email = input.nextLine();
-            System.out.print("> Password: ");
-            String password = input.nextLine();
-            
-            if (auth.signIn(email, password)){
-                System.out.println(auth.getAdminData());
-                menuUtama(input);
-                break;
+        System.out.println("===================================");
+        System.out.println(" SELAMAT DATANG DI APLIKASI MARTSA");   
+        System.out.println("-----------------------------------");
+        System.out.println("[1] Login ");
+        System.out.println("[2] Register");
+        System.out.println("===================================");
+        System.out.print("Pilih menu: ");
+        int menu = input.nextInt();
+        input.nextLine();
+        if (menu == 1){
+            while (login > 0){
+                System.out.println("\n>>> !!Masukkan Akun!! <<<");
+                System.out.print("> Email: ");
+                String email = input.nextLine();
+                System.out.print("> Password: ");
+                String password = input.nextLine();
+                
+                if (auth.signIn(email, password)){
+                    System.out.println(auth.getAdminData());
+                    menuUtama(input);
+                    break;
+                }
+                else {
+                    login--;
+                    System.out.println("!!Email atau Password tidak tepat!!");
+                    System.out.println("Kesempatan login tersisa: " + login);
+                }
             }
-            else {
-                login--;
-                System.out.println("!!Email atau Password tidak tepat!!");
-                System.out.println("Kesempatan login tersisa: " + login);
+            if (login == 0){
+                System.out.println("!!Program Berhenti!!");
             }
         }
-        if (login == 0){
-            System.out.println("!!Program Berhenti!!");
+        else if (menu == 2){
+            // System.out.println("\n>>> !!Registrasi Akun!! <<<");
+            // System.out.print("> Email: ");
+            // String email = input.nextLine();
+            // System.out.print("> Password: ");
+            // String password = input.nextLine();
+            
+            // if (auth.signUp(email, password)){
+            //     System.out.println("Akun berhasil dibuat!");
+            // } else {
+            //     System.out.println("Akun gagal dibuat, silakan coba lagi.");
+            //     return;
+            // }
+        }
+        else {
+            System.out.println("Pilihan tidak valid, program akan berhenti.");
+            return;
         }
     input.close();
     }
+
     
     public static void menuUtama(Scanner input){
         CrudProduk crudp = new CrudProduk();
