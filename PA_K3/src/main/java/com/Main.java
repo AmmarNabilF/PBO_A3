@@ -25,6 +25,13 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        // cek koneksi database
+        DB db = new DB();
+        if (db.conn != null){
+            System.out.println("Koneksi ke database berhasil!");
+        } else {
+            System.out.println("Koneksi ke database gagal!");
+        }
         Scanner input = new Scanner(System.in);
         int login = 3;
         
