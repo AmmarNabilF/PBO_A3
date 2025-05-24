@@ -23,7 +23,7 @@ public class auth {
     }
 
     public void register(Pemasok pemasok) throws SQLException {
-        String query = "INSERT INTO pemasok (idPemasok, namaPemasok, alamat, nomorTelepon, password) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO tbpemasok (idPemasok, namaPemasok, alamat, nomorTelepon, password) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, pemasok.getIdPemasok());
@@ -41,7 +41,7 @@ public class auth {
 
     // ambildata akun pemasok berdasarkan idPemasok
     public Pemasok getAkun(String idPemasok) throws SQLException {
-        String query = "SELECT * FROM pemasok WHERE idPemasok = ?";
+        String query = "SELECT * FROM tbpemasok WHERE idPemasok = ?";
         Pemasok pemasok = null;
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -68,6 +68,46 @@ public class auth {
     public void registerPemasok(String idPemasok, String namaPemasok, String alamat, int nomorTelepon, String password) throws SQLException {
         Pemasok pemasok = new Pemasok(idPemasok, namaPemasok, alamat, nomorTelepon, password);
         register(pemasok);
+    }
+
+    public Object login(int nomorTelepon, String password) throws SQLException {
+        // Coba login sebagai Pemasok
+        String queryPemasok = "SELECT * FROM tbpemasok WHERE nomorTelepon = ? AND password = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(queryPemasok)) {
+            stmt.setInt(1, nomorTelepon);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Pemasok(
+                    rs.getString("idPemasok"),
+                    rs.getString("namaPemasok"),
+                    rs.getString("alamat"),
+                    rs.getInt("nomorTelepon"),
+                    rs.getString("password")
+                );
+            }
+        }
+
+        // Jika tidak ditemukan di pemasok, coba login sebagai Pengguna
+        String queryPengguna = "SELECT * FROM tbpengguna WHERE nomorTelepon = ? AND password = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(queryPengguna)) {
+            stmt.setInt(1, nomorTelepon);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Pengguna(
+                    rs.getString("idPengguna"),
+                    rs.getString("namaPengguna"),
+                    rs.getString("nomorTelepon"),
+                    rs.getString("password")
+                );
+            }
+        }
+
+        // Jika tidak ditemukan di kedua tabel
+        return null;
     }
     
 }
