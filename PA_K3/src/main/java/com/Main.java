@@ -308,8 +308,9 @@ public class Main {
                     String kategori = input.nextLine();
                     System.out.print("Harga: ");
                     Double harga = input.nextDouble();
+                    String idResep = "RE"; // id resep nanti diubah
                     
-                    Produk produk = new Produk(idProduk, nama, kategori, harga);
+                    Produk produk = new Produk(idProduk, idResep, nama, kategori, harga);
                     crudp.simpanProduk(produk);
                     System.out.println("Produk berhasil ditambahkan");
                     break;
