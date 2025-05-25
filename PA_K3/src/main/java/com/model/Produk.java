@@ -10,12 +10,17 @@ package com.model;
  */
 public class Produk {
     private String idProduk;
+    private String idResep;
     private String namaProduk;
     private String kategori;
     private double hargaJual;
     
     public String getidProduk() {
         return this.idProduk;
+    }
+
+    public String getidResep(){
+        return this.idResep;
     }
     
     public String getnamaProduk() {
@@ -30,8 +35,9 @@ public class Produk {
         return this.hargaJual;
     }
 
-    public Produk(String idProduk, String namaProduk, String kategori, double hargaJual) {
+    public Produk(String idProduk, String idResep, String namaProduk, String kategori, double hargaJual) {
         this.idProduk = idProduk;
+        this.idResep = idResep;
         this.namaProduk = namaProduk;
         this.kategori = kategori;
         this.hargaJual = hargaJual;
@@ -39,6 +45,10 @@ public class Produk {
     
     public String setidProduk(String idp){
         return this.idProduk = idp;
+    }
+
+    public String setidResep(String idr){
+        return this.idResep = idr;
     }
     
     public String setnamaProduk(String nama){

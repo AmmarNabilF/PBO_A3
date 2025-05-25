@@ -15,42 +15,42 @@ public class Pengguna {
     protected String nomorTelepon;
     protected String password;
     
-    public String getidPengguna(){
-        return this.idPengguna;
-    }
-    
-    public String getnama(){
-        return this.namaPengguna;
-    }
-    
-    public String getnomorTelepon(){
-        return this.nomorTelepon;
-    }
-    
-    public String getpassword(){
-        return this.password;
-    }
-
-    public void setidPengguna(String idPengguna){
+    public Pengguna(String idPengguna, String namaPengguna, String nomorTelepon, String password){
         this.idPengguna = idPengguna;
-    }
-
-    public void setnama(String namaPengguna){
         this.namaPengguna = namaPengguna;
-    }
-
-    public void setnomorTelepon(String nomorTelepon){
         this.nomorTelepon = nomorTelepon;
-    }
-
-    public void setpassword(String password){
         this.password = password;
     }
     
-    public Pengguna(String idPengguna, String nama, String nomorTelepon, String password){
+    public String getIdPengguna(){
+        return this.idPengguna;
+    }
+    
+    public String getNamaPengguna(){
+        return this.namaPengguna;
+    }
+    
+    public String getNomorTelepon(){
+        return this.nomorTelepon;
+    }
+    
+    public String getPassword(){
+        return this.password;
+    }
+
+    public void setIdPengguna(String idPengguna){
         this.idPengguna = idPengguna;
+    }
+
+    public void setNama(String namaPengguna){
         this.namaPengguna = namaPengguna;
+    }
+
+    public void setNomorTelepon(String nomorTelepon){
         this.nomorTelepon = nomorTelepon;
+    }
+
+    public void setPassword(String password){
         this.password = password;
     }
 }

@@ -11,10 +11,10 @@ package com.model;
 public final class Pemasok {
     private String idPemasok;
     private String namaPemasok;
-    private int nomorTelepon;
+    private String nomorTelepon;
     private String password;
 
-    public Pemasok(String idPemasok, String namaPemasok, int nomorTelepon, String password) {
+    public Pemasok(String idPemasok, String namaPemasok, String nomorTelepon, String password) {
         this.idPemasok = idPemasok;
         this.namaPemasok = namaPemasok;
         this.nomorTelepon = nomorTelepon;
@@ -29,7 +29,7 @@ public final class Pemasok {
         return namaPemasok;
     }
 
-    public int getNomorTelepon() {
+    public String getNomorTelepon() {
         return nomorTelepon;
     }
 
@@ -45,8 +45,12 @@ public final class Pemasok {
         this.namaPemasok = namaPemasok;
     }
 
-    public void setNomorTelepon(int nomorTelepon) {
+    public void setNomorTelepon(String nomorTelepon) {
         this.nomorTelepon = nomorTelepon;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
     
     public void terimaPesanan(String namabahan, int jumlah, String satuan){
