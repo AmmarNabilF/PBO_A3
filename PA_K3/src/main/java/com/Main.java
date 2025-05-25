@@ -439,19 +439,23 @@ public class Main {
             System.out.println("\nMENU RESEP");
             System.out.println("1. Buat resep");
             System.out.println("2. Lihat resep");
-            System.out.println("3. Kembali");
+            System.out.println("3. Hapus resep");
+            System.out.println("4. Kembali");
             System.out.print("Pilih menu: ");
             int pilih = input.nextInt();
             input.nextLine();
             
             switch(pilih){
                 case 1:
-                    buatResep(crudr, input);
+                    getInsertQuery(crudr, input);
                     break;
                 case 2:
-                    lihatResep(crudr, input);
+                    getSelectAllQuery(crudr, input);
                     break;
                 case 3:
+                    getDeleteQuery(crudr, input);
+                    break;
+                case 4:
                     back = true;
                     break;
                 default:
@@ -460,38 +464,37 @@ public class Main {
         }
     }
     
-    public static void buatResep(CrudResep crudr, Scanner input){
-        System.out.print("Masukkan ID Resep: ");
+    public static void getInsertQuery(CrudResep crudr, Scanner input){
+        System.out.print("ID Resep: ");
         String idResep = input.nextLine();
-        System.out.print("Masukkan ID Produk: ");
-        String idProduk = input.nextLine();
+        System.out.print("ID Bahan: ");
+        String idBahan = input.nextLine();
+        System.out.print("Nama Resep: ");
+        String namaResep = input.nextLine();
+        System.out.print("Jumlah Digunakan: ");
+        int jmlhDigunakan = input.nextInt();
+        input.nextLine(); // consume newline
         
-        boolean tambahBahan = true;
-        while(tambahBahan){
-            System.out.print("Masukkan ID Bahan: ");
-            String idBahan = input.nextLine();
-            System.out.print("Jumlah Digunakan: ");
-            int jumlahDigunakan = input.nextInt();
-            input.nextLine();
-            System.out.print("Satuan: ");
-            String satuan = input.nextLine();
-            
-            Resep resep = new Resep(idResep, idProduk, idBahan, jumlahDigunakan, satuan);
-            crudr.catatResep(resep);
-            
-            System.out.print("Tambah lagi?: y/n: ");
-            String lanjut = input.nextLine();
-            if (!lanjut.equals("y")){
-                tambahBahan = false;
-            }
-            System.out.println("");
-        }
-        System.out.println("Resep sudah dibuat!!");
+        Resep resep = new Resep(idResep, namaResep, idBahan, jmlhDigunakan);
+        crudr.tambah(resep);
+        System.out.println("Resep berhasil ditambahkan!");
     }
     
-    public static void lihatResep(CrudResep crudr, Scanner input){
+    public static void getSelectAllQuery(CrudResep crudr, Scanner input){
         System.out.println("RESEP PRODUK MARTSA");
-        crudr.showResep();
+        crudr.show();
+    }
+
+    public static void getDeleteQuery(CrudResep crudr, Scanner input){
+        System.out.print("Masukkan ID Resep yang ingin dihapus: ");
+        String idHapus = input.nextLine();
+        Resep resep = new Resep(idHapus, "", "", 0);
+        
+        if (crudr.hapus(resep)){
+            System.out.println("Resep berhasil dihapus.");
+        } else {
+            System.out.println("ID tidak ditemukan.");
+        }
     }
     
     public static void pesanBahan(Scanner input){

@@ -12,8 +12,7 @@ public class Resep {
     private String idResep;
     private String idBahan;
     private String namaResep;
-    private int jumlahDigunakan;
-    private String satuan;
+    private int jmlhDigunakan;
     
     public String getidResep(){
         return this.idResep;
@@ -28,19 +27,14 @@ public class Resep {
     }
     
     public int getjumlahDigunakan(){
-        return this.jumlahDigunakan;
+        return this.jmlhDigunakan;
     }
     
-    public String getsatuan(){
-        return this.satuan;
-    }
-
-    public Resep(String idResep, String namaResep, String idBahan, int jumlahDigunakan, String satuan) {
+    public Resep(String idResep, String namaResep, String idBahan, int jmlhDigunakan) {
         this.idResep = idResep;
         this.namaResep = namaResep;
         this.idBahan = idBahan;
-        this.jumlahDigunakan = jumlahDigunakan;
-        this.satuan = satuan;
+        this.jmlhDigunakan = jmlhDigunakan;
     }
     
     @Override
@@ -48,8 +42,7 @@ public class Resep {
         return "ID :" + getidResep() +
                 ", ID Produk: " + getnamaResep() +
                 ", ID Bahan: " + getidBahan() +
-                ", Jumlah digunakan: " + getjumlahDigunakan() +
-                ", Satuan: " + getsatuan();
+                ", Jumlah digunakan: " + getjumlahDigunakan();
     }
     
 }
