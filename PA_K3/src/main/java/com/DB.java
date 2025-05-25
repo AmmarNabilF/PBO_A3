@@ -2,7 +2,7 @@ package com;
 import java.sql.*;
 
 public class DB {
-    Connection conn;
+    public Connection conn;
     public DB() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

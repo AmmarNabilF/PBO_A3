@@ -3,7 +3,9 @@ import com.auth.auth;
 import com.control.CrudBahan;
 import com.control.CrudProduk;
 import com.control.CrudResep;
+import com.control.PasokanController;
 import com.model.BahanBaku;
+import com.model.Pasokan;
 import com.model.Produk;
 import com.model.Resep;
 import com.model.TransaksiMasuk;
@@ -19,6 +21,7 @@ public class Main {
         DB db = new DB();
         auth auth = new auth(db.conn);
         Scanner input = new Scanner(System.in);
+        PasokanController crudpa = new PasokanController();
         int login = 3;
         if (db.conn != null){
             System.out.println("Koneksi ke database berhasil!");
@@ -55,7 +58,7 @@ public class Main {
                                 Pemasok pemasok = (Pemasok) auth.login(notelp, password);
                                 if (pemasok != null) {
                                     System.out.println("Login berhasil! Selamat datang, " + pemasok.getNamaPemasok() + "!");
-                                    menuPemasok(input, auth);
+                                    menuPasokan(input, crudpa, auth.getCurrentUserId());
                                     break;
                                 } else {
                                     login--;
@@ -177,8 +180,58 @@ public class Main {
         }
     }
 
-    public static void menuPemasok(Scanner input, auth auth){
-        System.out.println("Menu Pemasok");
+    public static void menuPasokan(Scanner input, PasokanController crudpa, String idPemasok){
+        int pilih;
+        boolean back = false;
+        while (!back) {
+            System.out.println("\nMENU PASOKAN BAHAN BAKU");
+            System.out.println("1. Tambah Pasokan");
+            System.out.println("2. Lihat Semua Pasokan");
+            System.out.println("3. Update Pasokan");
+            System.out.println("4. Hapus Pasokan");
+            System.out.println("5. Kembali");
+            System.out.print("Pilih menu: ");
+            pilih = input.nextInt();
+            input.nextLine();
+    
+            switch (pilih) {
+                case 1:
+                    System.out.print("Nama Bahan: ");
+                    String namaBahan = input.nextLine();
+                    System.out.print("Harga Satuan: ");
+                    double hargaSatuan = input.nextDouble();
+                    System.out.print("Stok: ");
+                    int stok = input.nextInt();
+                    input.nextLine(); // consume newline
+                    crudpa.tambahPasokan(idPemasok, namaBahan, hargaSatuan, stok);
+                    break;
+                case 2:
+                    crudpa.lihatPasokan();
+                    break;
+                case 3:
+                    System.out.print("Masukkan ID Pasokan yang ingin diubah: ");
+                    String idUpdate = input.nextLine();
+                    System.out.print("Nama Bahan Baru: ");
+                    String newNama = input.nextLine();
+                    System.out.print("Harga Satuan Baru: ");
+                    double newHarga = input.nextDouble();
+                    System.out.print("Stok Baru: ");
+                    int newStok = input.nextInt();
+                    input.nextLine(); // consume newline
+                    crudpa.updatePasokan(idUpdate, newNama, newHarga, newStok);
+                    break;
+                case 4:
+                    System.out.print("Masukkan ID Pasokan yang ingin dihapus: ");
+                    String idDelete = input.nextLine();
+                    crudpa.hapusPasokan(idDelete);
+                    break;
+                case 5:
+                    back = true;
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid.");
+            }
+        }
     }
     
     public static void menuUtama(Scanner input){
@@ -281,7 +334,6 @@ public class Main {
         }while (!back);
     }
         
-    
     public static void menuProduk(Scanner input, CrudProduk crudp){
         int pilih;
         boolean back = true;
