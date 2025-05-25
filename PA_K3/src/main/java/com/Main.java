@@ -1,8 +1,8 @@
 package com;
 import com.auth.auth;
-import com.crud.CrudProduk;
-import com.crud.CrudBahan;
-import com.crud.CrudResep;
+import com.control.CrudBahan;
+import com.control.CrudProduk;
+import com.control.CrudResep;
 import com.model.BahanBaku;
 import com.model.Produk;
 import com.model.Resep;
@@ -12,97 +12,173 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import com.model.Transaksi;
 import com.model.Pemasok;
+import com.model.Pengguna;
 
 public class Main {
     public static void main(String[] args) {
-        // cek koneksi database
         DB db = new DB();
+        auth auth = new auth(db.conn);
+        Scanner input = new Scanner(System.in);
+        int login = 3;
         if (db.conn != null){
             System.out.println("Koneksi ke database berhasil!");
         } else {
             System.out.println("Koneksi ke database gagal!");
             return;
         }
-        Scanner input = new Scanner(System.in);
-        int login = 3;
-
-        System.out.println("=== SELAMAT DATANG DI MARTSA ===");
-        System.out.println("[1] Login");
-        System.out.println("[2] Daftar Akun Pemasok");
-
-        System.out.print("Pilih menu: ");
-        int menu = input.nextInt();
-        input.nextLine(); // Clear the newline character
-        if (menu == 1){
-            System.out.println("\n>>> !!MASUKKAN AKUN PEMASOK!! <<<");
-            System.out.print("> Nomor telepon: ");
-            String nomorTelepon = input.nextLine();
-            System.out.print("> Password: ");
-            String password = input.nextLine();
-            
-            auth auth = new auth(db.conn);
-            Pemasok pemasok;
-            try {
-                pemasok = auth.getAkun(nomorTelepon);
-                if (pemasok != null && pemasok.getPassword().equals(password)) {
-                    System.out.println("Login berhasil!");
-                    menuUtama(input);
-                } else {
-                    System.out.println("nomor tidak tepat atau Password salah!");
-                    return;
-                }
-            } catch (Exception e) {
-                System.out.println("Gagal login: " + e.getMessage());
-                return;
-            }
-
-        }
-        if (menu == 2){
-            System.out.println("\n>>> !!DAFTAR AKUN PEMASOK!! <<<");
-            System.out.print("> ID Pemasok: ");
-            String idPemasok = input.nextLine();
-            System.out.print("> Nama Pemasok: ");
-            String namaPemasok = input.nextLine();
-            System.out.print("> Nomor Telepon: ");
-            int nomorTelepon = input.nextInt();
-            input.nextLine(); // Clear the newline character
-            System.out.print("> Password: ");
-            String password = input.nextLine();
-            
-            Pemasok pemasok = new Pemasok(idPemasok, namaPemasok, nomorTelepon, password);
-            
-            auth auth = new auth(db.conn);
-            try {
-                auth.register(pemasok);
-                System.out.println("Akun berhasil didaftarkan!");
-            } catch (Exception e) {
-                System.out.println("Gagal mendaftar akun: " + e.getMessage());
-                return;
-            }
-        }
         
-        // while (login > 0){
-        //     System.out.println("\n>>> !!Masukkan Akun!! <<<");
-        //     System.out.print("> Email: ");
-        //     String email = input.nextLine();
-        //     System.out.print("> Password: ");
-        //     String password = input.nextLine();
-            
-        //     if (auth.signIn(email, password)){
-        //         System.out.println(auth.getAdminData());
-        //         menuUtama(input);
-        //         break;
-        //     }
-        //     else {
-        //         login--;
-        //         System.out.println("!!Email atau Password tidak tepat!!");
-        //         System.out.println("Kesempatan login tersisa: " + login);
-        //     }
-        // }
-        if (login == 0){
-            System.out.println("!!Program Berhenti!!");
+        while (true) {
+            System.out.println("=== SELAMAT DATANG DI MARTSA ===");
+            System.out.println("[1] Login");
+            System.out.println("[2] Daftar");
+            System.out.println("[0] Keluar");
+            System.out.print("Pilih menu: ");
+            int menu = input.nextInt();
+            input.nextLine(); 
+            if (menu == 1) {
+                while (true) {
+                    System.out.println("\n>>> !!LOGIN AKUN PEMASOK!! <<<");
+                    System.out.println("[1] Pemasok");
+                    System.out.println("[2] Pengguna");
+                    System.out.println("[0] Kembali");
+                    System.out.print("Pilih menu: ");
+                    int pilihanLogin = input.nextInt();
+                    input.nextLine();
+                    if (pilihanLogin == 1) {
+                        while (login > 0) {
+                            System.out.println("\n>>> !!Masukkan Akun Pemasok!! <<<");
+                            System.out.print("> NomorTelp.: ");
+                            String notelp = input.nextLine();
+                            System.out.print("> Password: ");
+                            String password = input.nextLine();
+                            try {
+                                Pemasok pemasok = (Pemasok) auth.login(notelp, password);
+                                if (pemasok != null) {
+                                    System.out.println("Login berhasil! Selamat datang, " + pemasok.getNamaPemasok() + "!");
+                                    menuPemasok(input, auth);
+                                    break;
+                                } else {
+                                    login--;
+                                    System.out.println("Login gagal! Nomor telepon atau password salah.");
+                                    if (login > 0) {
+                                        System.out.println("Sisa percobaan login: " + login);
+                                    } else {
+                                        System.out.println("Anda telah mencoba login 3 kali. Silakan coba lagi nanti.");
+                                        System.exit(0);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Koneksi Terputus");
+                            }
+                        }
+                    } else if (pilihanLogin == 2) {
+                        while (login > 0) {
+                            System.out.println("\n>>> !!Masukkan Akun Pengguna!! <<<");
+                            System.out.print("> NomorTelp.: ");
+                            String notelp = input.nextLine();
+                            System.out.print("> Password: ");
+                            String password = input.nextLine();
+                            try {
+                                Pengguna pengguna = (Pengguna) auth.login(notelp, password);
+                                if (pengguna != null) {
+                                    System.out.println("Login berhasil! Selamat datang, " + pengguna.getNamaPengguna() + "!");
+                                    menuUtama(input);
+                                    break;
+                                } else {
+                                    login--;
+                                    System.out.println("Login gagal! Nomor telepon atau password salah.");
+                                    if (login > 0) {
+                                        System.out.println("Sisa percobaan login: " + login);
+                                    } else {
+                                        System.out.println("Anda telah mencoba login 3 kali. Silakan coba lagi nanti.");
+                                        System.exit(0);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Koneksi Terputus");
+                            }
+                        }
+                    } else if (pilihanLogin == 0) {
+                        System.out.println("Kembali ke menu utama.");
+                        break;
+                    } else {
+                        System.out.println("Pilihan tidak valid.");
+                    }
+                }
+            }
+            if (menu == 2) {
+                System.out.println("\n>>> !!DAFTAR AKUN!! <<<");
+                System.out.println("[1] Pemasok");
+                System.out.println("[2] Pengguna");
+                System.out.println("[0] Kembali");
+                System.out.print("Pilih menu: ");
+                int pilihanDaftar = input.nextInt();
+                input.nextLine();
+                if (pilihanDaftar == 1) {
+                    System.out.println("\n>>> !!DAFTAR AKUN PEMASOK!! <<<");
+                    String idPemasok;
+                    try {
+                        idPemasok = auth.generateIdPemasok();
+                    } catch (Exception e) {
+                        System.out.println("Gagal mendapatkan ID Pemasok");
+                        return;
+                    }
+                    System.out.print("> Nama Pemasok: ");
+                    String namaPemasok = input.nextLine();
+                    System.out.print("> Nomor Telepon: ");
+                    String nomorTelepon = input.nextLine();
+                    System.out.print("> Password: ");
+                    String password = input.nextLine();
+                    Pemasok pemasok = new Pemasok(idPemasok, namaPemasok, nomorTelepon, password);
+                    try {
+                        auth.register(pemasok);
+                        System.out.println("Akun berhasil didaftarkan!");
+                    } catch (Exception e) {
+                        System.out.println("Gagal mendaftar akun");
+                        return;
+                    }
+                } else if (pilihanDaftar == 2) {
+                    System.out.println("\n>>> !!DAFTAR AKUN PENGGUNA!! <<<");
+                    String idPengguna;
+                    try {
+                        idPengguna = auth.generateIdPengguna();
+                    } catch (Exception e) {
+                        System.out.println("Gagal mendapatkan ID Pengguna");
+                        return;
+                    }
+                    System.out.print("> Nama Pengguna: ");
+                    String namaPengguna = input.nextLine();
+                    System.out.print("> Nomor Telepon: ");
+                    String nomorTelepon = input.nextLine();
+                    System.out.print("> Password: ");
+                    String password = input.nextLine();
+                    Pengguna pengguna = new Pengguna(idPengguna, namaPengguna, nomorTelepon, password);
+                    try {
+                        auth.register(pengguna);
+                        System.out.println("Akun berhasil didaftarkan!");
+                    } catch (Exception e) {
+                        System.out.println("Gagal mendaftar akun");
+                        return;
+                    }
+                } else if (pilihanDaftar == 0) {
+                    System.out.println("Kembali ke menu utama.");
+                    break;
+                } else {
+                    System.out.println("Pilihan tidak valid.");
+                }
+            }
+            else if (menu == 0) {
+                System.out.println("Terima kasih telah menggunakan aplikasi ini!");
+                input.close();
+                break;
+            } else {
+                System.out.println("Pilihan tidak valid.");
+            }
         }
-    input.close();
+    }
+
+    public static void menuPemasok(Scanner input, auth auth){
+        System.out.println("Menu Pemasok");
     }
     
     public static void menuUtama(Scanner input){
