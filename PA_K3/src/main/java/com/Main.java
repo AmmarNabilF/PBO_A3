@@ -63,15 +63,13 @@ public class Main {
             String idPemasok = input.nextLine();
             System.out.print("> Nama Pemasok: ");
             String namaPemasok = input.nextLine();
-            System.out.print("> Alamat: ");
-            String alamat = input.nextLine();
             System.out.print("> Nomor Telepon: ");
             int nomorTelepon = input.nextInt();
             input.nextLine(); // Clear the newline character
             System.out.print("> Password: ");
             String password = input.nextLine();
             
-            Pemasok pemasok = new Pemasok(idPemasok, namaPemasok, alamat, nomorTelepon, password);
+            Pemasok pemasok = new Pemasok(idPemasok, namaPemasok, nomorTelepon, password);
             
             auth auth = new auth(db.conn);
             try {

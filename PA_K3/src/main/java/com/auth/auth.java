@@ -23,14 +23,13 @@ public class auth {
     }
 
     public void register(Pemasok pemasok) throws SQLException {
-        String query = "INSERT INTO tbpemasok (idPemasok, namaPemasok, alamat, nomorTelepon, password) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO tbpemasok (idPemasok, namaPemasok, nomorTelepon, password) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, pemasok.getIdPemasok());
             stmt.setString(2, pemasok.getNamaPemasok());
-            stmt.setString(3, pemasok.getAlamat());
-            stmt.setInt(4, pemasok.getNomorTelepon());
-            stmt.setString(5, pemasok.getPassword());
+            stmt.setInt(3, pemasok.getNomorTelepon());
+            stmt.setString(4, pemasok.getPassword());
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error during registration: " + e.getMessage());
@@ -52,7 +51,6 @@ public class auth {
                 pemasok = new Pemasok(
                     rs.getString("idPemasok"),
                     rs.getString("namaPemasok"),
-                    rs.getString("alamat"),
                     rs.getInt("nomorTelepon"),
                     rs.getString("password")
                 );
@@ -65,8 +63,8 @@ public class auth {
         return pemasok;
     }
 
-    public void registerPemasok(String idPemasok, String namaPemasok, String alamat, int nomorTelepon, String password) throws SQLException {
-        Pemasok pemasok = new Pemasok(idPemasok, namaPemasok, alamat, nomorTelepon, password);
+    public void registerPemasok(String idPemasok, String namaPemasok, int nomorTelepon, String password) throws SQLException {
+        Pemasok pemasok = new Pemasok(idPemasok, namaPemasok, nomorTelepon, password);
         register(pemasok);
     }
 
@@ -82,7 +80,6 @@ public class auth {
                 return new Pemasok(
                     rs.getString("idPemasok"),
                     rs.getString("namaPemasok"),
-                    rs.getString("alamat"),
                     rs.getInt("nomorTelepon"),
                     rs.getString("password")
                 );
