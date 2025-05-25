@@ -10,32 +10,47 @@ package com.model;
  * @author ammar
  */
 public class Pengguna {
-    private String idUser;
-    private String nama;
-    protected String email;
+    private String idPengguna;
+    private String namaPengguna;
+    protected String nomorTelepon;
     protected String password;
     
-    public String getidUser(){
-        return this.idUser;
+    public String getidPengguna(){
+        return this.idPengguna;
     }
     
     public String getnama(){
-        return this.nama;
+        return this.namaPengguna;
     }
     
-    public String getemail(){
-        return this.email;
+    public String getnomorTelepon(){
+        return this.nomorTelepon;
     }
     
     public String getpassword(){
         return this.password;
     }
+
+    public void setidPengguna(String idPengguna){
+        this.idPengguna = idPengguna;
+    }
+
+    public void setnama(String namaPengguna){
+        this.namaPengguna = namaPengguna;
+    }
+
+    public void setnomorTelepon(String nomorTelepon){
+        this.nomorTelepon = nomorTelepon;
+    }
+
+    public void setpassword(String password){
+        this.password = password;
+    }
     
-    
-    public Pengguna(String idUser, String nama, String email, String password){
-        this.idUser = idUser;
-        this.nama = nama;
-        this.email = email;
+    public Pengguna(String idPengguna, String nama, String nomorTelepon, String password){
+        this.idPengguna = idPengguna;
+        this.namaPengguna = namaPengguna;
+        this.nomorTelepon = nomorTelepon;
         this.password = password;
     }
     
