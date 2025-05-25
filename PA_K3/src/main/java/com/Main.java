@@ -11,6 +11,7 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import com.model.Transaksi;
+import com.model.Pemasok;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,25 +25,80 @@ public class Main {
         }
         Scanner input = new Scanner(System.in);
         int login = 3;
-        
-        while (login > 0){
-            System.out.println("\n>>> !!Masukkan Akun!! <<<");
-            System.out.print("> Email: ");
-            String email = input.nextLine();
+
+        System.out.println("=== SELAMAT DATANG DI MARTSA ===");
+        System.out.println("[1] Login");
+        System.out.println("[2] Daftar Akun Pemasok");
+
+        System.out.print("Pilih menu: ");
+        int menu = input.nextInt();
+        input.nextLine(); // Clear the newline character
+        if (menu == 1){
+            System.out.println("\n>>> !!MASUKKAN AKUN PEMASOK!! <<<");
+            System.out.print("> Nomor telepon: ");
+            String nomorTelepon = input.nextLine();
             System.out.print("> Password: ");
             String password = input.nextLine();
             
-            if (auth.signIn(email, password)){
-                System.out.println(auth.getAdminData());
-                menuUtama(input);
-                break;
+            auth auth = new auth(db.conn);
+            Pemasok pemasok;
+            try {
+                pemasok = auth.getAkun(nomorTelepon);
+                if (pemasok != null && pemasok.getPassword().equals(password)) {
+                    System.out.println("Login berhasil!");
+                    menuUtama(input);
+                } else {
+                    System.out.println("nomor tidak tepat atau Password salah!");
+                    return;
+                }
+            } catch (Exception e) {
+                System.out.println("Gagal login: " + e.getMessage());
+                return;
             }
-            else {
-                login--;
-                System.out.println("!!Email atau Password tidak tepat!!");
-                System.out.println("Kesempatan login tersisa: " + login);
+
+        }
+        if (menu == 2){
+            System.out.println("\n>>> !!DAFTAR AKUN PEMASOK!! <<<");
+            System.out.print("> ID Pemasok: ");
+            String idPemasok = input.nextLine();
+            System.out.print("> Nama Pemasok: ");
+            String namaPemasok = input.nextLine();
+            System.out.print("> Nomor Telepon: ");
+            int nomorTelepon = input.nextInt();
+            input.nextLine(); // Clear the newline character
+            System.out.print("> Password: ");
+            String password = input.nextLine();
+            
+            Pemasok pemasok = new Pemasok(idPemasok, namaPemasok, nomorTelepon, password);
+            
+            auth auth = new auth(db.conn);
+            try {
+                auth.register(pemasok);
+                System.out.println("Akun berhasil didaftarkan!");
+            } catch (Exception e) {
+                System.out.println("Gagal mendaftar akun: " + e.getMessage());
+                return;
             }
         }
+        
+        // while (login > 0){
+        //     System.out.println("\n>>> !!Masukkan Akun!! <<<");
+        //     System.out.print("> Email: ");
+        //     String email = input.nextLine();
+        //     System.out.print("> Password: ");
+        //     String password = input.nextLine();
+            
+        //     if (auth.signIn(email, password)){
+        //         System.out.println(auth.getAdminData());
+        //         menuUtama(input);
+        //         break;
+        //     }
+        //     else {
+        //         login--;
+        //         System.out.println("!!Email atau Password tidak tepat!!");
+        //         System.out.println("Kesempatan login tersisa: " + login);
+        //     }
+        // }
         if (login == 0){
             System.out.println("!!Program Berhenti!!");
         }

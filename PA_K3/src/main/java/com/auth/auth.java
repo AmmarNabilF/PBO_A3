@@ -3,16 +3,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.auth;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.model.Pengguna;
+import com.model.Pemasok;
 
 /**
  *
  * @author ammar
  */
 public class auth {
-<<<<<<< Updated upstream
-    private static Pengguna akun = new Pengguna("006","Ammar","006@mail.com","2309106006");
-=======
     private Connection conn;
 
     public auth(Connection conn) {
@@ -20,20 +23,20 @@ public class auth {
     }
 
     public void register(Pemasok pemasok) throws SQLException {
-        String query = "INSERT INTO tbpemasok (idPemasok, namaPemasok, alamat, nomorTelepon, password) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO tbpemasok (idPemasok, namaPemasok, nomorTelepon, password) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, pemasok.getIdPemasok());
             stmt.setString(2, pemasok.getNamaPemasok());
-            stmt.setString(3, pemasok.getAlamat());
-            stmt.setInt(4, pemasok.getNomorTelepon());
-            stmt.setString(5, pemasok.getPassword());
+            stmt.setInt(3, pemasok.getNomorTelepon());
+            stmt.setString(4, pemasok.getPassword());
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error during registration: " + e.getMessage());
             throw e; // Rethrow the exception for further handling
         }
     }
+
 
     // ambildata akun pemasok berdasarkan idPemasok
     public Pemasok getAkun(String idPemasok) throws SQLException {
@@ -48,7 +51,6 @@ public class auth {
                 pemasok = new Pemasok(
                     rs.getString("idPemasok"),
                     rs.getString("namaPemasok"),
-                    rs.getString("alamat"),
                     rs.getInt("nomorTelepon"),
                     rs.getString("password")
                 );
@@ -61,8 +63,8 @@ public class auth {
         return pemasok;
     }
 
-    public void registerPemasok(String idPemasok, String namaPemasok, String alamat, int nomorTelepon, String password) throws SQLException {
-        Pemasok pemasok = new Pemasok(idPemasok, namaPemasok, alamat, nomorTelepon, password);
+    public void registerPemasok(String idPemasok, String namaPemasok, int nomorTelepon, String password) throws SQLException {
+        Pemasok pemasok = new Pemasok(idPemasok, namaPemasok, nomorTelepon, password);
         register(pemasok);
     }
 
@@ -78,7 +80,6 @@ public class auth {
                 return new Pemasok(
                     rs.getString("idPemasok"),
                     rs.getString("namaPemasok"),
-                    rs.getString("alamat"),
                     rs.getInt("nomorTelepon"),
                     rs.getString("password")
                 );
@@ -101,21 +102,9 @@ public class auth {
                 );
             }
         }
+
         // Jika tidak ditemukan di kedua tabel
         return null;
     }
->>>>>>> Stashed changes
     
-    public static boolean signIn(String email, String password){
-        if (email.equals(akun.getemail()) && password.equals(akun.getpassword())){
-            return true;
-        }
-        else{
-            System.out.println("email atau password tidak tepat!!");
-        }
-    return false;
-    }
-    public static String getAdminData(){
-        return "\n>> SELAMAT DATANG <<\n" + "( " + akun.getidUser() + " )" + akun.getnama();
-    }
 }
