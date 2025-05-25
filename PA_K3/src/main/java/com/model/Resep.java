@@ -10,8 +10,8 @@ package com.model;
  */
 public class Resep {
     private String idResep;
-    private String idProduk;
     private String idBahan;
+    private String namaResep;
     private int jumlahDigunakan;
     private String satuan;
     
@@ -19,8 +19,8 @@ public class Resep {
         return this.idResep;
     }
     
-    public String getidProduk(){
-        return this.idProduk;
+    public String getnamaResep(){
+        return this.namaResep;
     }
     
     public String getidBahan(){
@@ -35,9 +35,9 @@ public class Resep {
         return this.satuan;
     }
 
-    public Resep(String idResep, String idProduk, String idBahan, int jumlahDigunakan, String satuan) {
+    public Resep(String idResep, String namaResep, String idBahan, int jumlahDigunakan, String satuan) {
         this.idResep = idResep;
-        this.idProduk = idProduk;
+        this.namaResep = namaResep;
         this.idBahan = idBahan;
         this.jumlahDigunakan = jumlahDigunakan;
         this.satuan = satuan;
@@ -46,7 +46,7 @@ public class Resep {
     @Override
     public String toString(){
         return "ID :" + getidResep() +
-                ", ID Produk: " + getidProduk() +
+                ", ID Produk: " + getnamaResep() +
                 ", ID Bahan: " + getidBahan() +
                 ", Jumlah digunakan: " + getjumlahDigunakan() +
                 ", Satuan: " + getsatuan();
