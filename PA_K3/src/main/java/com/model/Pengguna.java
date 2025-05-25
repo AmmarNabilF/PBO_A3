@@ -53,6 +53,4 @@ public class Pengguna {
         this.nomorTelepon = nomorTelepon;
         this.password = password;
     }
-    
-    
 }
