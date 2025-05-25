@@ -1,70 +1,46 @@
 package com.model;
 
+import java.time.LocalDate;
+
 public class Pesan {
-    private int idPesanan;
-    private int idPengguna;
-    private int idBahan;
-    private java.sql.Timestamp tanggalMasuk;
+    private String idPengguna;
+    private String idPasokan;
+    private LocalDate tanggalMasuk;
     private int jumlah;
-    private double hargaUnit;
+    private double harga;
 
-    public Pesan() {
-    }
-
-    public Pesan(int idPesanan, int idPengguna, int idBahan, java.sql.Timestamp tanggalMasuk, int jumlah, double hargaUnit) {
-        this.idPesanan = idPesanan;
+    public Pesan(String idPengguna, String idPasokan, LocalDate tanggalMasuk, int jumlah, double harga) {
         this.idPengguna = idPengguna;
-        this.idBahan = idBahan;
+        this.idPasokan = idPasokan;
         this.tanggalMasuk = tanggalMasuk;
         this.jumlah = jumlah;
-        this.hargaUnit = hargaUnit;
+        this.harga = harga;
     }
 
-    public int getIdPesanan() {
-        return idPesanan;
+    public String getIdPengguna() { 
+        return idPengguna; 
     }
-
-    public void setIdPesanan(int idPesanan) {
-        this.idPesanan = idPesanan;
+    public String getIdPasokan() { 
+        return idPasokan; 
     }
-
-    public int getIdPengguna() {
-        return idPengguna;
+    public LocalDate getTanggalMasuk() { 
+        return tanggalMasuk; 
     }
-
-    public void setIdPengguna(int idPengguna) {
-        this.idPengguna = idPengguna;
+    public int getJumlah() { 
+        return jumlah; 
     }
-
-    public int getIdBahan() {
-        return idBahan;
+    public double getHarga() { 
+        return harga; 
     }
-
-    public void setIdBahan(int idBahan) {
-        this.idBahan = idBahan;
-    }
-
-    public java.sql.Timestamp getTanggalMasuk() {
-        return tanggalMasuk;
-    }
-
-    public void setTanggalMasuk(java.sql.Timestamp tanggalMasuk) {
-        this.tanggalMasuk = tanggalMasuk;
-    }
-
-    public int getJumlah() {
-        return jumlah;
-    }
-
-    public void setJumlah(int jumlah) {
-        this.jumlah = jumlah;
-    }
-
-    public double getHargaUnit() {
-        return hargaUnit;
-    }
-
-    public void setHargaUnit(double hargaUnit) {
-        this.hargaUnit = hargaUnit;
+    
+    @Override
+    public String toString() {
+        return "Pesan{" +
+                "idPengguna='" + idPengguna + '\'' +
+                ", idPasokan='" + idPasokan + '\'' +
+                ", tanggalMasuk=" + tanggalMasuk +
+                ", jumlah=" + jumlah +
+                ", harga=" + harga +
+                '}';
     }
 }

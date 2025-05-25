@@ -1,6 +1,6 @@
 package com;
 import com.auth.auth;
-import com.control.CrudBahan;
+import com.control.BahanBakuControl;
 import com.control.CrudProduk;
 import com.control.CrudResep;
 import com.control.PasokanController;
@@ -15,6 +15,8 @@ import java.time.format.DateTimeParseException;
 import com.model.Transaksi;
 import com.model.Pemasok;
 import com.model.Pengguna;
+import com.model.Pesan;
+import com.control.PesanControl;
 
 public class Main {
     public static void main(String[] args) {
@@ -40,7 +42,7 @@ public class Main {
             input.nextLine(); 
             if (menu == 1) {
                 while (true) {
-                    System.out.println("\n>>> !!LOGIN AKUN PEMASOK!! <<<");
+                    System.out.println("\n>>> !!LOGIN AKUN!! <<<");
                     System.out.println("[1] Pemasok");
                     System.out.println("[2] Pengguna");
                     System.out.println("[0] Kembali");
@@ -85,7 +87,7 @@ public class Main {
                                 Pengguna pengguna = (Pengguna) auth.login(notelp, password);
                                 if (pengguna != null) {
                                     System.out.println("Login berhasil! Selamat datang, " + pengguna.getNamaPengguna() + "!");
-                                    menuUtama(input);
+                                    menuUtama(input, auth);
                                     break;
                                 } else {
                                     login--;
@@ -234,21 +236,22 @@ public class Main {
         }
     }
     
-    public static void menuUtama(Scanner input){
+    public static void menuUtama(Scanner input, auth auth){
         CrudProduk crudp = new CrudProduk();
-        CrudBahan crudb = new CrudBahan();
         CrudResep crudr = new CrudResep();
+        PesanControl pesanControl = new PesanControl();
         int pilih;
         boolean run = true;
         do {
             System.out.println("");
             System.out.println("""
-                               ======= MENU UTAMA =======
-                               :: 1. Kelola Bahan Baku ::
-                               :: 2. Kelola Produk     ::
-                               :: 3. Kelola Resep      ::
-                               :: 4. Pesan Bahan Baku  ::
-                               :: 5. Keluar            ::
+                               ======= MENU PENGGUNA ====
+                                1. Kelola Bahan Baku 
+                                2. Kelola Produk     
+                                3. Kelola Resep      
+                                4. Pesan Bahan Baku  
+                                5. Lihat Riwayat Pesanan 
+                                6. Keluar            
                                ==========================
                                """);
             System.out.print("Pilih menu: ");
@@ -256,7 +259,7 @@ public class Main {
             
             switch (pilih){
                 case 1:
-                    menuBahanBaku(input, crudb);
+                    menuBahanBaku(input);
                     break;
                 case 2:
                     menuProduk(input, crudp);
@@ -265,9 +268,31 @@ public class Main {
                     menuResep(input, crudr);
                     break;
                 case 4:
-                    pesanBahan(input);
+                    System.out.println("\n=== PESAN BAHAN BAKU ===");
+                    String idPesanan;
+                    try {
+                        idPesanan = pesanControl.generateIdPesanan();
+                    } catch (Exception e) {
+                        System.out.println("Gagal mendapatkan ID Pesanan");
+                        return;
+                    }
+                    pesanControl.tampilkanDaftarPasokan();
+                    Scanner sc = new Scanner(System.in);
+                    System.out.print("Masukkan ID Pasokan yang ingin dipesan: ");
+                    String idPasokan = sc.nextLine();
+                    System.out.print("Masukkan jumlah yang ingin dipesan: ");
+                    int jumlahPesan = sc.nextInt();
+                    try {
+                        pesanControl.buatPesanan(idPesanan, auth.getCurrentUserId(), idPasokan, jumlahPesan);        
+                    } catch (Exception e) {
+                        System.out.println("Gagal membuat pesanan: " + e.getMessage());
+                    }
                     break;
                 case 5:
+                    System.out.println("\n=== RIWAYAT PESANAN ===");
+                    pesanControl.tampilkanRiwayatPesanan(auth.getCurrentUserId());
+                    break;
+                case 6:
                     run = false;
                     break;
                 default:
@@ -277,61 +302,35 @@ public class Main {
         }while(run);
         input.close();
     }
-    
-    
-    public static void menuBahanBaku(Scanner input, CrudBahan crudb){
-        int pilih;
-        boolean back = true;
-        do {
-            System.out.println("\n===== CRUD BAHAN BAKU =====");
-            System.out.println("1. Tambah Bahan");
-            System.out.println("2. Tampilkan Bahan");
-            System.out.println("3. Hapus Bahan");
-            System.out.println("4. Kembali");
+
+    public static void menuBahanBaku(Scanner input) {
+        BahanBakuControl crudb = new BahanBakuControl();
+        boolean back = false;
+        while (!back) {
+            System.out.println("\n===== MENU BAHAN BAKU =====");
+            System.out.println("1. Lihat Daftar Bahan Baku");
+            System.out.println("2. Hapus Bahan Baku");
+            System.out.println("3. Kembali");
             System.out.print("Pilih menu: ");
-            pilih = input.nextInt();
-            input.nextLine(); 
+            int pilih = input.nextInt();
+            input.nextLine();
 
             switch (pilih) {
                 case 1:
-                    System.out.print("ID Bahan: ");
-                    String idBahan = input.nextLine();
-                    System.out.print("Nama Bahan: ");
-                    String namaBahan = input.nextLine();
-                    System.out.print("Kategori: ");
-                    String kategori = input.nextLine();
-                    System.out.print("Stok: ");
-                    int stok = input.nextInt();
-                    input.nextLine();
-                    System.out.print("Satuan: ");
-                    String satuan = input.nextLine();
-                    
-                    System.out.print("Tanggal Expired (YYYY-MM-DD): ");
-                    LocalDate tanggalexp = inputTanggal(input, "Tanggal expired");
-                    
-                    BahanBaku bahan = new BahanBaku(idBahan, namaBahan, kategori, stok, satuan, tanggalexp);
-                    crudb.tambahBahan(bahan);
-                    System.out.println("Bahan berhasil ditambahkan!");
+                    crudb.tampilkanBahanBaku();
                     break;
                 case 2:
-                    crudb.showBahan();
-                    break;
-                case 3:
                     System.out.print("Masukkan ID bahan yang akan dihapus: ");
                     String idHapus = input.nextLine();
-                    if (crudb.delBahan(idHapus)) {
-                        System.out.println("Bahan berhasil dihapus.");
-                    } else {
-                        System.out.println("ID tidak ditemukan.");
-                    }
+                    crudb.hapusBahanBaku(idHapus);
                     break;
-                case 4:
+                case 3:
                     back = true;
                     break;
                 default:
                     System.out.println("Pilihan tidak valid.");
             }
-        }while (!back);
+        }
     }
         
     public static void menuProduk(Scanner input, CrudProduk crudp){
