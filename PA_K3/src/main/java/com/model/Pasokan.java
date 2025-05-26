@@ -49,10 +49,7 @@ public class Pasokan {
 
     @Override
     public String toString() {
-        return "ID Pasokan: " + idPasokan +
-               ", ID Pemasok: " + idPemasok +
-               ", Nama Bahan: " + namaBahan +
-               ", Harga Satuan: " + hargaSatuan +
-               ", Stok: " + stok;
+        return String.format("%-12s | %-25s | Rp%-13.2f | %-5d", 
+                            idPasokan, namaBahan, hargaSatuan, stok);
     }
 }

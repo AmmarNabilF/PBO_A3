@@ -14,6 +14,7 @@ public class BahanBakuControl {
 
     public void tampilkanBahanBaku() {
         String sql = "SELECT * FROM tbbahanbaku";
+        boolean found = false;
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             System.out.println("Daftar Bahan Baku Tersedia:");
@@ -24,6 +25,10 @@ public class BahanBakuControl {
                         rs.getInt("stok")
                 );
                 System.out.println(bb);
+                found = true;
+            }
+            if (!found) {
+                System.out.println("Data bahan baku kosong.");
             }
         } catch (SQLException e) {
             System.out.println("Gagal menampilkan bahan baku: " + e.getMessage());

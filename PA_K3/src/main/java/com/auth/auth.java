@@ -9,13 +9,13 @@ import com.model.Pemasok;
 
 public class auth {
     private Connection conn;
-    private String currentUserId;
+    private static String currentUserId;
 
     public auth(Connection conn) {
         this.conn = conn;
     }
 
-    public String getCurrentUserId() {
+    public static String getCurrentUserId() {
         return currentUserId;
     }
 
@@ -23,9 +23,31 @@ public class auth {
         currentUserId = null;
     }
 
-    public void register(Pemasok pemasok) throws SQLException {
-        String query = "INSERT INTO tbpemasok (idPemasok, namaPemasok, nomorTelepon, password) VALUES (?, ?, ?, ?)";
+    private boolean isPhoneNumberExists(String nomorTelepon) throws SQLException {
+        String checkPemasok = "SELECT 1 FROM tbpemasok WHERE nomorTelepon = ?";
+        String checkPengguna = "SELECT 1 FROM tbpengguna WHERE nomorTelepon = ?";
 
+        try (
+            PreparedStatement stmtPemasok = conn.prepareStatement(checkPemasok);
+            PreparedStatement stmtPengguna = conn.prepareStatement(checkPengguna)
+        ) {
+            stmtPemasok.setString(1, nomorTelepon);
+            ResultSet rs1 = stmtPemasok.executeQuery();
+            if (rs1.next()) return true;
+
+            stmtPengguna.setString(1, nomorTelepon);
+            ResultSet rs2 = stmtPengguna.executeQuery();
+            if (rs2.next()) return true;
+        }
+
+        return false;
+    }
+
+    public void register(Pemasok pemasok) throws SQLException {
+        if (isPhoneNumberExists(pemasok.getNomorTelepon())) {
+            throw new SQLException("duplikat");
+        }
+        String query = "INSERT INTO tbpemasok (idPemasok, namaPemasok, nomorTelepon, password) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, pemasok.getIdPemasok());
             stmt.setString(2, pemasok.getNamaPemasok());
@@ -39,8 +61,10 @@ public class auth {
     }
 
     public void register(Pengguna pengguna) throws SQLException {
+        if (isPhoneNumberExists(pengguna.getNomorTelepon())) {
+            throw new SQLException("duplikat");
+        }
         String query = "INSERT INTO tbpengguna (idPengguna, namaPengguna, nomorTelepon, password) VALUES (?, ?, ?, ?)";
-
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, pengguna.getIdPengguna());
             stmt.setString(2, pengguna.getNamaPengguna());
