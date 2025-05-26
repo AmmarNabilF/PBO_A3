@@ -1,7 +1,7 @@
 package com;
 import com.auth.auth;
 import com.control.BahanBakuControl;
-import com.control.CrudProduk;
+
 import com.control.CrudResep;
 import com.control.PasokanController;
 import com.model.BahanBaku;
@@ -240,8 +240,9 @@ public class Main {
     }
     
     public static void menuPengguna(Scanner input, String idPengguna){
-        CrudProduk crudp = new CrudProduk();
-        CrudResep crudr = new CrudResep();
+        DB db = new DB();
+        // CrudProduk crudp = new CrudProduk();
+        CrudResep crudr = new CrudResep(db.conn);
         PesanControl pesanControl = new PesanControl();
         int pilih;
         boolean run = true;
@@ -265,7 +266,7 @@ public class Main {
                     menuBahanBaku(input);
                     break;
                 case 2:
-                    menuProduk(input, crudp);
+                    // menuProduk(input, crudp);
                     break;
                 case 3:
                     menuResep(input, crudr);
@@ -334,103 +335,103 @@ public class Main {
         }
     }
         
-    public static void menuProduk(Scanner input, CrudProduk crudp){
-        int pilih;
-        boolean back = true;
-        do {
-            System.out.println(" ");
-            System.out.println("MENU PRODUK");
-            System.out.println("[1] Tambah produk");
-            System.out.println("[2] Lihat produk");
-            System.out.println("[3] Cari produk");
-            System.out.println("[4] Perbarui produk");
-            System.out.println("[5] Hapus produk");
-            System.out.println("[0] Kembali");
-            System.out.print("Pilih menu: ");
-            pilih = input.nextInt();
-            input.nextLine();
+    // public static void menuProduk(Scanner input, CrudProduk crudp){
+    //     int pilih;
+    //     boolean back = true;
+    //     do {
+    //         System.out.println(" ");
+    //         System.out.println("MENU PRODUK");
+    //         System.out.println("[1] Tambah produk");
+    //         System.out.println("[2] Lihat produk");
+    //         System.out.println("[3] Cari produk");
+    //         System.out.println("[4] Perbarui produk");
+    //         System.out.println("[5] Hapus produk");
+    //         System.out.println("[0] Kembali");
+    //         System.out.print("Pilih menu: ");
+    //         pilih = input.nextInt();
+    //         input.nextLine();
             
-            switch (pilih){
-                case 1:
-                    System.out.print("ID Produk: ");
-                    String idProduk = input.nextLine();
-                    System.out.print("Nama Produk: ");
-                    String nama = input.nextLine();                    
-                    System.out.print("Kategori Produk: ");
-                    String kategori = input.nextLine();
-                    System.out.print("Harga: ");
-                    Double harga = input.nextDouble();
-                    String idResep = "RE"; // id resep nanti diubah
+    //         switch (pilih){
+    //             case 1:
+    //                 System.out.print("ID Produk: ");
+    //                 String idProduk = input.nextLine();
+    //                 System.out.print("Nama Produk: ");
+    //                 String nama = input.nextLine();                    
+    //                 System.out.print("Kategori Produk: ");
+    //                 String kategori = input.nextLine();
+    //                 System.out.print("Harga: ");
+    //                 Double harga = input.nextDouble();
+    //                 String idResep = "RE"; // id resep nanti diubah
                     
-                    Produk produk = new Produk(idProduk, idResep, nama, kategori, harga);
-                    crudp.simpanProduk(produk);
-                    System.out.println("Produk berhasil ditambahkan");
-                    break;
+    //                 Produk produk = new Produk(idProduk, idResep, nama, kategori, harga);
+    //                 crudp.simpanProduk(produk);
+    //                 System.out.println("Produk berhasil ditambahkan");
+    //                 break;
                     
-                case 2:
-                    System.out.println("DAFTAR PRODUK MARTSA");
-                    crudp.showProduk();
-                    break;
+    //             case 2:
+    //                 System.out.println("DAFTAR PRODUK MARTSA");
+    //                 crudp.showProduk();
+    //                 break;
                     
-                case 3:
-                    System.out.println("\nCARI PRODUK DENGAN NAMA ATAU ID\n");
-                    System.out.print("Cari: ");
-                    String keyword = input.nextLine();
+    //             case 3:
+    //                 System.out.println("\nCARI PRODUK DENGAN NAMA ATAU ID\n");
+    //                 System.out.print("Cari: ");
+    //                 String keyword = input.nextLine();
                     
-                    Produk hasil = crudp.searchProduk(keyword);
+    //                 Produk hasil = crudp.searchProduk(keyword);
                     
-                    if (hasil == null){
-                        hasil = crudp.searchProduk(keyword, true);
-                    }
-                    if (hasil != null){
-                        System.out.println("Produk ditemukan");
-                        System.out.println(hasil);
-                    }
-                    else{
-                        System.out.println("Produk tidak ditemukan");
-                    }
+    //                 if (hasil == null){
+    //                     hasil = crudp.searchProduk(keyword, true);
+    //                 }
+    //                 if (hasil != null){
+    //                     System.out.println("Produk ditemukan");
+    //                     System.out.println(hasil);
+    //                 }
+    //                 else{
+    //                     System.out.println("Produk tidak ditemukan");
+    //                 }
                     
-                    break;
+    //                 break;
                     
-                case 4:
-                    System.out.print("Masukkan ID produk yang ingin diubah: ");
-                    String newID = input.nextLine();
-                    System.out.print("Nama baru: ");
-                    String newNama = input.nextLine();
-                    System.out.print("Kategori: ");
-                    String newKategori = input.nextLine();
-                    System.out.print("Harga baru: ");
-                    Double newHarga = input.nextDouble();
+    //             case 4:
+    //                 System.out.print("Masukkan ID produk yang ingin diubah: ");
+    //                 String newID = input.nextLine();
+    //                 System.out.print("Nama baru: ");
+    //                 String newNama = input.nextLine();
+    //                 System.out.print("Kategori: ");
+    //                 String newKategori = input.nextLine();
+    //                 System.out.print("Harga baru: ");
+    //                 Double newHarga = input.nextDouble();
                     
-                    if (crudp.updateProduk(newID, newNama, newKategori, newHarga)){
-                        System.out.println("Produk telah diperbarui");
-                    }
-                    else {
-                        System.out.println("Produk tidak ditemukan");
-                    }
-                    break;
+    //                 if (crudp.updateProduk(newID, newNama, newKategori, newHarga)){
+    //                     System.out.println("Produk telah diperbarui");
+    //                 }
+    //                 else {
+    //                     System.out.println("Produk tidak ditemukan");
+    //                 }
+    //                 break;
                     
-                case 5:
-                    System.out.print("Masukkan ID produk yang ingin dihapus: ");
-                    String delID = input.nextLine();
+    //             case 5:
+    //                 System.out.print("Masukkan ID produk yang ingin dihapus: ");
+    //                 String delID = input.nextLine();
                     
-                    if (crudp.delProduk(delID)){
-                        System.out.println("Produk dihapus!!");
-                    }
-                    else {
-                        System.out.println("Produk gagal dihapus :( ");
-                    }
-                    break;
+    //                 if (crudp.delProduk(delID)){
+    //                     System.out.println("Produk dihapus!!");
+    //                 }
+    //                 else {
+    //                     System.out.println("Produk gagal dihapus :( ");
+    //                 }
+    //                 break;
                 
-                case 0:
-                    back = true;
-                    break;
+    //             case 0:
+    //                 back = true;
+    //                 break;
                     
-                default:
-                    System.out.println("Inputan pilih tidak tepat");
-            }
-        } while (!back);
-    }
+    //             default:
+    //                 System.out.println("Inputan pilih tidak tepat");
+    //         }
+    //     } while (!back);
+    // }
     
     public static void menuResep(Scanner input, CrudResep crudr){
         boolean back = false;
@@ -461,28 +462,43 @@ public class Main {
     }
     
     public static void buatResep(CrudResep crudr, Scanner input){
-        System.out.print("Masukkan ID Resep: ");
-        String idResep = input.nextLine();
-        System.out.print("Masukkan ID Produk: ");
-        String idProduk = input.nextLine();
         
+        String idResep;
+        try {
+            idResep = crudr.generateIdResep();
+        } catch (Exception e) {
+            System.out.println("Gagal mendapatkan ID Pesanan");
+            return;
+        }
+        
+        System.out.print("Masukkan Nama Resep: ");
+        String namaResep = input.nextLine();
+        System.out.println("=== TAMBAH BAHAN KE RESEP ===");
+
         boolean tambahBahan = true;
         while(tambahBahan){
             System.out.print("Masukkan ID Bahan: ");
             String idBahan = input.nextLine();
+            if (idBahan.isEmpty()) {
+                System.out.println("ID Bahan tidak boleh kosong!");
+                continue;
+            }
             System.out.print("Jumlah Digunakan: ");
-            int jumlahDigunakan = input.nextInt();
+
+            int jmlhDigunakan = input.nextInt();
             input.nextLine();
-            System.out.print("Satuan: ");
-            String satuan = input.nextLine();
-            
-            Resep resep = new Resep(idResep, idProduk, idBahan, jumlahDigunakan, satuan);
-            crudr.catatResep(resep);
+
+            if (jmlhDigunakan <= 0) {
+                System.out.println("Jumlah digunakan harus lebih dari 0!");
+                continue;
+            }
             
             System.out.print("Tambah lagi?: y/n: ");
             String lanjut = input.nextLine();
             if (!lanjut.equals("y")){
                 tambahBahan = false;
+                Resep resep = new Resep(idResep, namaResep, idBahan, jmlhDigunakan);
+                crudr.addResep(resep);
             }
             System.out.println("");
         }
