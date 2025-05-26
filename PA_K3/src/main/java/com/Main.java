@@ -295,7 +295,7 @@ public class Main {
                     int stok = -1;
                     do {
                         System.out.print("Stok: ");
-                        inputStr = input.nextLine().trim(); // hapus spasi
+                        inputStr = input.nextLine().trim();
                     
                         if (inputStr.isEmpty()) {
                             System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
@@ -351,7 +351,7 @@ public class Main {
                    int newStok = -1;
                     do {
                         System.out.print("Stok: ");
-                        inputStr = input.nextLine().trim(); // hapus spasi
+                        inputStr = input.nextLine().trim();
                     
                         if (inputStr.isEmpty()) {
                             System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
@@ -432,7 +432,7 @@ public class Main {
                     int jumlahPesan = -1;
                     do{
                         System.out.print("Jumlah Pesan: ");
-                        String inputStr = sc.nextLine().trim(); // hapus spasi
+                        String inputStr = sc.nextLine().trim();
                         
                         if (inputStr.isEmpty()) {
                             System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
@@ -451,7 +451,7 @@ public class Main {
                     try {
                         pesanControl.buatPesanan(idPesanan, idPengguna, idPasokan, jumlahPesan);        
                     } catch (Exception e) {
-                        System.out.println("Gagal membuat pesanan: " + e.getMessage());
+                        System.out.println("Gagal membuat pesanan");
                     }
                     break;
                 case 5:
