@@ -1,15 +1,15 @@
-// /*
-//  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-//  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
-//  */
-// package com.control;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.control;
 
-// import com.model.BahanBaku;
-// import java.util.Iterator;
-// /**
-//  *
-//  * @author ammar
-//  */
+import com.model.BahanBaku;
+import java.util.Iterator;
+/**
+ *
+ * @author ammar
+ */
 // public class CrudBahan extends Crud<BahanBaku> {
     
 //     public void tambahBahan(BahanBaku bahanBaru) {
@@ -40,5 +40,4 @@
 //         }
 //         return false;   
 //     }
-    
 // }
