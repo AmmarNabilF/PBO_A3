@@ -614,7 +614,7 @@ public class Main {
                 case 2:
                     lihatResep(crudr, input);
                     break;
-                case 3:
+                case 0:
                     back = true;
                     break;
                 default:
@@ -623,53 +623,65 @@ public class Main {
         }
     }
     
-    public static void buatResep(CrudResep crudr, Scanner input){
-        
+    public static void buatResep(CrudResep crudr, Scanner input) {
         String idResep;
         try {
             idResep = crudr.generateIdResep();
         } catch (Exception e) {
-            System.out.println("Gagal mendapatkan ID Pesanan");
+            System.out.println("Gagal mendapatkan ID Resep");
             return;
         }
-        
+
         System.out.print("Masukkan Nama Resep: ");
         String namaResep = input.nextLine();
         System.out.println("=== TAMBAH BAHAN KE RESEP ===");
 
         boolean tambahBahan = true;
-        while(tambahBahan){
+        while (tambahBahan) {
             System.out.print("Masukkan ID Bahan: ");
             String idBahan = input.nextLine();
             if (idBahan.isEmpty()) {
                 System.out.println("ID Bahan tidak boleh kosong!");
                 continue;
             }
-            System.out.print("Jumlah Digunakan: ");
 
-            int jmlhDigunakan = input.nextInt();
-            input.nextLine();
+            System.out.print("Jumlah Digunakan: ");
+            int jmlhDigunakan;
+            try {
+                jmlhDigunakan = Integer.parseInt(input.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Input jumlah tidak valid.");
+                continue;
+            }
 
             if (jmlhDigunakan <= 0) {
                 System.out.println("Jumlah digunakan harus lebih dari 0!");
                 continue;
             }
-            
-            System.out.print("Tambah lagi?: y/n: ");
+
+            Resep resep = new Resep(idResep, namaResep, idBahan, jmlhDigunakan);
+            crudr.addResep(resep);
+
+            System.out.print("Tambah bahan lain? (y/n): ");
             String lanjut = input.nextLine();
-            if (!lanjut.equals("y")){
+            if (!lanjut.equalsIgnoreCase("y")) {
                 tambahBahan = false;
-                Resep resep = new Resep(idResep, namaResep, idBahan, jmlhDigunakan);
-                crudr.addResep(resep);
             }
-            System.out.println("");
         }
-        System.out.println("Resep sudah dibuat!!");
+    System.out.println("Resep '" + namaResep + "' sudah dibuat dengan ID: " + idResep);
     }
+
     
     public static void lihatResep(CrudResep crudr, Scanner input){
         System.out.println("RESEP PRODUK MARTSA");
         crudr.showResep();
+        System.out.print("Masukkan ID Resep untuk melihat detail: ");
+        String idResep = input.nextLine();
+        if (idResep.isEmpty()) {
+            System.out.println("ID Resep tidak boleh kosong!");
+            return;
+        }
+        crudr.showDetailResep(idResep);
     }
     
     public static void pesanBahan(Scanner input){
