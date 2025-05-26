@@ -44,5 +44,10 @@ public class Resep {
                 ", ID Bahan: " + getidBahan() +
                 ", Jumlah digunakan: " + getjumlahDigunakan();
     }
+
+
+
+
+
     
 }
