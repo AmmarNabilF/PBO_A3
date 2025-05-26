@@ -23,6 +23,7 @@ public class Main {
             System.out.println("Koneksi ke database gagal!");
             return;
         }
+<<<<<<< Updated upstream
         Scanner input = new Scanner(System.in);
         int login = 3;
 
@@ -80,6 +81,356 @@ public class Main {
             } catch (Exception e) {
                 System.out.println("Gagal mendaftar akun: " + e.getMessage());
                 return;
+=======
+        
+        menu:
+        while (true) {
+            System.out.println("\n=== SELAMAT DATANG DI MARTSA ===");
+            System.out.println("[1] Login");
+            System.out.println("[2] Daftar");
+            System.out.println("[0] Keluar");
+            System.out.print("Pilih menu: ");
+            int menu = input.nextInt();
+            input.nextLine(); 
+            if (menu == 1) {
+                while (true) {
+                    System.out.println("\n>>> !!LOGIN AKUN PEMASOK!! <<<");
+                    System.out.println("[1] Pemasok");
+                    System.out.println("[2] Pengguna");
+                    System.out.println("[0] Kembali");
+                    System.out.print("Pilih menu: ");
+                    int pilihanLogin = input.nextInt();
+                    input.nextLine();
+                    if (pilihanLogin == 1) {
+                        while (login > 0) {
+                            System.out.println("\n>>> !!Masukkan Akun Pemasok!! <<<");
+                            String notelp;
+                            do {
+                                System.out.print("> Nomor Telepon: ");
+                                notelp = input.nextLine();
+                                if (notelp.trim().isEmpty() || !notelp.matches("\\d{10,14}")) {
+                                    System.out.println("Nomor telepon tidak valid.  Harus terdiri dari 10 hingga 14 digit angka.");
+                                }
+                            } while (notelp.isEmpty() || !notelp.matches("\\d{10,14}"));
+                            String password;
+                            do {
+                                System.out.print("> Password    : ");
+                                password = input.nextLine();
+                                if (password.trim().isEmpty() || password.length() < 6) {
+                                    System.out.println("Password tidak valid. Harus terdiri dari minimal 6 karakter.");
+                                }
+                            } while (password.trim().isEmpty() || password.length() < 6);
+                            try {
+                                Pemasok pemasok = (Pemasok) auth.login(notelp, password);
+                                if (pemasok != null) {
+                                    System.out.println("Login berhasil! Selamat datang, " + pemasok.getNamaPemasok() + "!");
+                                    menuPasokan(input, crudpa, auth.getCurrentUserId());
+                                    login = 3;
+                                    continue menu;
+                                } else {
+                                    login--;
+                                    System.out.println("Login gagal! Nomor telepon atau password salah.");
+                                    if (login > 0) {
+                                        System.out.println("Sisa percobaan login: " + login);
+                                    } else {
+                                        System.out.println("Anda telah mencoba login 3 kali. Silakan coba lagi nanti.");
+                                        System.exit(0);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Koneksi Terputus");
+                            }
+                        }
+                    } else if (pilihanLogin == 2) {
+                        while (login > 0) {
+                            System.out.println("\n>>> !!Masukkan Akun Pengguna!! <<<");
+                            String notelp;
+                            do {
+                                System.out.print("> Nomor Telepon: ");
+                                notelp = input.nextLine();
+                                if (notelp.trim().isEmpty() || !notelp.matches("\\d{10,14}")) {
+                                    System.out.println("Nomor telepon tidak valid.  Harus terdiri dari 10 hingga 14 digit angka.");
+                                }
+                            } while (notelp.trim().isEmpty() || !notelp.matches("\\d{10,14}"));
+                            String password;
+                            do {
+                                System.out.print("> Password    : ");
+                                password = input.nextLine();
+                                if (password.trim().isEmpty() || password.length() < 6) {
+                                    System.out.println("Password tidak valid. Harus terdiri dari minimal 6 karakter.");
+                                }
+                            } while (password.trim().isEmpty() || password.length() < 6);
+                            try {
+                                Pengguna pengguna = (Pengguna) auth.login(notelp, password);
+                                if (pengguna != null) {
+                                    System.out.println("Login berhasil! Selamat datang, " + pengguna.getNamaPengguna() + "!");
+                                    menuPengguna(input, auth.getCurrentUserId());
+                                    login = 3;
+                                    continue menu;
+                                } else {
+                                    login--;
+                                    System.out.println("Login gagal! Nomor telepon atau password salah.");
+                                    if (login > 0) {
+                                        System.out.println("Sisa percobaan login: " + login);
+                                    } else {
+                                        System.out.println("Anda telah mencoba login 3 kali. Silakan coba lagi nanti.");
+                                        System.exit(0);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Koneksi Terputus");
+                            }
+                        }
+                    } else if (pilihanLogin == 0) {
+                        System.out.println("Kembali ke menu utama.");
+                        break;
+                    } else {
+                        System.out.println("Pilihan tidak valid.");
+                    }
+                }
+            }
+            if (menu == 2) {
+                System.out.println("\n>>> !!DAFTAR AKUN!! <<<");
+                System.out.println("[1] Pemasok");
+                System.out.println("[2] Pengguna");
+                System.out.println("[0] Kembali");
+                System.out.print("Pilih menu: ");
+                int pilihanDaftar = input.nextInt();
+                input.nextLine();
+                if (pilihanDaftar == 1) {
+                    System.out.println("\n>>> !!DAFTAR AKUN PEMASOK!! <<<");
+                    String idPemasok;
+                    try {
+                        idPemasok = auth.generateIdPemasok();
+                    } catch (Exception e) {
+                        System.out.println("Gagal mendapatkan ID Pemasok");
+                        return;
+                    }
+                    String namaPemasok;
+                    do{
+                        System.out.print("> Nama Pemasok: ");
+                        namaPemasok = input.nextLine();
+                        if (namaPemasok.trim().isEmpty()|| !namaPemasok.matches("[a-zA-Z\\s]+")) {
+                            System.out.println("Nama pengguna tidak sesuai. Silakan coba lagi.");
+                        }
+                    }while(namaPemasok.trim().isEmpty()||!namaPemasok.matches("[a-zA-Z\\s]+"));
+                    String nomorTelepon;
+                    do{
+                        System.out.print("> Nomor Telepon: ");
+                        nomorTelepon = input.nextLine();
+                        if (nomorTelepon.trim().isEmpty() || !nomorTelepon.matches("\\d{10,14}")) {
+                            System.out.println("Nomor telepon tidak valid.  Harus terdiri dari 10 hingga 14 digit angka.");
+                        }
+                    }while (nomorTelepon.trim().isEmpty() || !nomorTelepon.matches("\\d{10,14}"));
+                
+                    String password;
+                    do{
+                        System.out.print("> Password: ");
+                        password = input.nextLine();
+                        if (password.trim().isEmpty() || password.length() < 6) {
+                            System.out.println("Password tidak valid. Harus terdiri dari minimal 6 karakter.");
+                        }
+                    }while (password.trim().isEmpty() || password.length() < 6);
+                    Pemasok pemasok = new Pemasok(idPemasok, namaPemasok, nomorTelepon, password);
+                    try {
+                        auth.register(pemasok);
+                        System.out.println("Akun berhasil didaftarkan!");
+                    } catch (Exception e) {
+                        System.out.println("Gagal mendaftar akun");
+                        return;
+                    }
+                } else if (pilihanDaftar == 2) {
+                    System.out.println("\n>>> !!DAFTAR AKUN PENGGUNA!! <<<");
+                    String idPengguna;
+                    try {
+                        idPengguna = auth.generateIdPengguna();
+                    } catch (Exception e) {
+                        System.out.println("Gagal mendapatkan ID Pengguna");
+                        return;
+                    }
+                    String namaPengguna;
+                    do{
+                        System.out.print("> Nama Pengguna: ");
+                        namaPengguna = input.nextLine();
+                        if (namaPengguna.trim().isEmpty()|| !namaPengguna.matches("[a-zA-Z\\s]+")) {
+                            System.out.println("Nama pengguna tidak sesuai. Silakan coba lagi.");
+                        }
+                    }while(namaPengguna.trim().isEmpty()||!namaPengguna.matches("[a-zA-Z\\s]+"));
+                    String nomorTelepon;
+                    do{
+                        System.out.print("> Nomor Telepon: ");
+                        nomorTelepon = input.nextLine();
+                        if (nomorTelepon.trim().isEmpty() || !nomorTelepon.matches("\\d{10,14}")) {
+                            System.out.println("Nomor telepon tidak valid.  Harus terdiri dari 10 hingga 14 digit angka.");
+                        }
+                    }while(nomorTelepon.trim().isEmpty() || !nomorTelepon.matches("\\d{10,14}"));
+
+                    String password;
+                    do{
+                        System.out.print("> Password: ");
+                        password = input.nextLine();
+                        if (password.trim().isEmpty() || password.length() < 6) {
+                            System.out.println("Password tidak valid. Harus terdiri dari minimal 6 karakter.");
+                        }
+                    }while(password.trim().isEmpty() || password.length() < 6);
+                    Pengguna pengguna = new Pengguna(idPengguna, namaPengguna, nomorTelepon, password);
+                    try {
+                        auth.register(pengguna);
+                        System.out.println("Akun berhasil didaftarkan!");
+                    } catch (Exception e) {
+                        System.out.println("Gagal mendaftar akun");
+                        return;
+                    }
+                }else if (pilihanDaftar == 0) {
+                    System.out.println("Kembali ke menu utama.");
+                    break;
+                } else {
+                    System.out.println("Pilihan tidak valid.");
+                }
+            }
+            else if (menu == 0) {
+                System.out.println("Terima kasih telah menggunakan aplikasi ini!");
+                input.close();
+                break;
+            } else {
+                System.out.println("Pilihan tidak valid.");
+            }
+        }
+    }
+
+    public static void menuPasokan(Scanner input, PasokanController crudpa, String idPemasok){
+        int pilih;
+        boolean back = false;
+        while (!back) {
+            System.out.println("\nMENU PASOKAN BAHAN BAKU");
+            System.out.println("[1] Tambah Pasokan");
+            System.out.println("[2] Lihat Semua Pasokan");
+            System.out.println("[3] Update Pasokan");
+            System.out.println("[4] Hapus Pasokan");
+            System.out.println("[0] Keluar");
+            System.out.print("Pilih menu: ");
+            pilih = input.nextInt();
+            input.nextLine();
+    
+            switch (pilih) {
+                case 1:
+                    String namaBahan;
+                    do {
+                        System.out.print("Nama Bahan: ");
+                        namaBahan = input.nextLine();
+                        if (namaBahan.trim().isEmpty() || !namaBahan.matches("[a-zA-Z\\s]+")) {
+                            System.out.println("Nama bahan tidak sesuai. Silakan coba lagi.");
+                        }
+                    } while (namaBahan.trim().isEmpty() || !namaBahan.matches("[a-zA-Z\\s]+"));
+                    double hargaSatuan = -1;
+                    String inputStr;
+                    
+                    do {
+                        System.out.print("Harga Satuan: ");
+                        inputStr = input.nextLine().trim(); 
+                    
+                        if (inputStr.isEmpty()) {
+                            System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
+                            continue;
+                        }
+                    
+                        if (inputStr.matches("^[0-9]+(\\.[0-9]+)?$")) {
+                            hargaSatuan = Double.parseDouble(inputStr);
+                            if (hargaSatuan <= 0) {
+                                System.out.println("Harga harus lebih besar dari 0.");
+                            }
+                        } else {
+                            System.out.println("Input tidak valid. Masukkan angka desimal (misal: 1500.00).");
+                        }
+                    } while (hargaSatuan <= 0);
+                    int stok = -1;
+                    do {
+                        System.out.print("Stok: ");
+                        inputStr = input.nextLine().trim(); // hapus spasi
+                    
+                        if (inputStr.isEmpty()) {
+                            System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
+                            continue;
+                        }
+                    
+                        if (inputStr.matches("\\d+")) { 
+                            stok = Integer.parseInt(inputStr);
+                            if (stok < 0) {
+                                System.out.println("Stok tidak boleh negatif.");
+                            }
+                        } else {
+                            System.out.println("Input tidak valid. Masukkan angka bulat (misal: 10).");
+                        }
+                    } while (stok < 0);
+                    
+                    
+                    crudpa.tambahPasokan(idPemasok, namaBahan, hargaSatuan, stok);
+                    break;
+                case 2:
+                    crudpa.lihatPasokan();
+                    break;
+                case 3:
+                    System.out.print("Masukkan ID Pasokan yang ingin diubah: ");
+                    String idUpdate = input.nextLine();
+                    String newNama;
+                    do{
+                        System.out.print("Nama Pasokan baru: ");
+                        newNama = input.nextLine();
+                        if(newNama.trim().isEmpty() || !newNama.matches("[a-zA-Z\\s]+")) {
+                            System.out.println("Nama pasokan tidak sesuai. Silakan coba lagi.");
+                        }
+                    }while (newNama.trim().isEmpty() || !newNama.matches("[a-zA-Z\\s]+"));
+                    double newHarga = -1; 
+                    do {
+                        System.out.print("Harga Satuan: ");
+                        inputStr = input.nextLine().trim(); 
+                    
+                        if (inputStr.isEmpty()) {
+                            System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
+                            continue;
+                        }
+                    
+                        if (inputStr.matches("^[0-9]+(\\.[0-9]+)?$")) {
+                            newHarga = Double.parseDouble(inputStr);
+                            if (newHarga <= 0) {
+                                System.out.println("Harga harus lebih besar dari 0.");
+                            }
+                        } else {
+                            System.out.println("Input tidak valid. Masukkan angka desimal (misal: 1500.00).");
+                        }
+                    } while (newHarga <= 0);
+                   int newStok = -1;
+                    do {
+                        System.out.print("Stok: ");
+                        inputStr = input.nextLine().trim(); // hapus spasi
+                    
+                        if (inputStr.isEmpty()) {
+                            System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
+                            continue;
+                        }
+                    
+                        if (inputStr.matches("\\d+")) { 
+                            newStok = Integer.parseInt(inputStr);
+                            if (newStok < 0) {
+                                System.out.println("Stok tidak boleh negatif.");
+                            }
+                        } else {
+                            System.out.println("Input tidak valid. Masukkan angka bulat (misal: 10).");
+                        }
+                    } while (newStok < 0);
+                    crudpa.updatePasokan(idUpdate, newNama, newHarga, newStok);
+                    break;
+                case 4:
+                    System.out.print("Masukkan ID Pasokan yang ingin dihapus: ");
+                    String idDelete = input.nextLine();
+                    crudpa.hapusPasokan(idDelete);
+                    break;
+                case 0:
+                    back = true;
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid.");
+>>>>>>> Stashed changes
             }
         }
         
@@ -138,7 +489,46 @@ public class Main {
                     menuResep(input, crudr);
                     break;
                 case 4:
+<<<<<<< Updated upstream
                     pesanBahan(input);
+=======
+                    System.out.println("\n=== PESAN BAHAN BAKU ===");
+                    String idPesanan;
+                    try {
+                        idPesanan = pesanControl.generateIdPesanan();
+                    } catch (Exception e) {
+                        System.out.println("Gagal mendapatkan ID Pesanan");
+                        return;
+                    }
+                    pesanControl.tampilkanDaftarPasokan();
+                    Scanner sc = new Scanner(System.in);
+                    System.out.print("Masukkan ID Pasokan yang ingin dipesan: ");
+                    String idPasokan = sc.nextLine();
+                    int jumlahPesan = -1;
+                    do{
+                        System.out.print("Jumlah Pesan: ");
+                        String inputStr = sc.nextLine().trim(); // hapus spasi
+                        
+                        if (inputStr.isEmpty()) {
+                            System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
+                            continue;
+                        }
+                        
+                        if (inputStr.matches("\\d+")) { 
+                            jumlahPesan = Integer.parseInt(inputStr);
+                            if (jumlahPesan < 0) {
+                                System.out.println("Jumlah pesan harus lebih besar dari 0.");
+                            }
+                        } else {
+                            System.out.println("Input tidak valid. Masukkan angka bulat (misal: 10).");
+                        }
+                    }while(jumlahPesan <= 0);
+                    try {
+                        pesanControl.buatPesanan(idPesanan, idPengguna, idPasokan, jumlahPesan);        
+                    } catch (Exception e) {
+                        System.out.println("Gagal membuat pesanan: " + e.getMessage());
+                    }
+>>>>>>> Stashed changes
                     break;
                 case 5:
                     run = false;
@@ -187,7 +577,13 @@ public class Main {
                     System.out.println("Bahan berhasil ditambahkan!");
                     break;
                 case 2:
+<<<<<<< Updated upstream
                     crudb.showBahan();
+=======
+                    System.out.print("Masukkan ID bahan yang akan dihapus: "); //Belum
+                    String idHapus = input.nextLine();
+                    crudb.hapusBahanBaku(idHapus);
+>>>>>>> Stashed changes
                     break;
                 case 3:
                     System.out.print("Masukkan ID bahan yang akan dihapus: ");
@@ -226,14 +622,50 @@ public class Main {
             
             switch (pilih){
                 case 1:
-                    System.out.print("ID Produk: ");
+                    System.out.print("ID Produk: "); //belum
                     String idProduk = input.nextLine();
-                    System.out.print("Nama Produk: ");
-                    String nama = input.nextLine();                    
+                    String nama;
+                    do {
+                        System.out.print("Nama Bahan: ");
+                        nama = input.nextLine();
+                        if (nama.trim().isEmpty() || !nama.matches("[a-zA-Z\\s]+")) {
+                            System.out.println("Nama bahan tidak sesuai. Silakan coba lagi.");
+                        }
+                    } while (nama.trim().isEmpty() || !nama.matches("[a-zA-Z\\s]+"));
                     System.out.print("Kategori Produk: ");
-                    String kategori = input.nextLine();
+                    String kategori;
+                    do {
+                        kategori = input.nextLine();
+                        if (kategori.trim().isEmpty() || !kategori.matches("[a-zA-Z\\s]+")) {
+                            System.out.println("Kategori tidak sesuai. Silakan coba lagi.");
+                        }
+                    } while (kategori.trim().isEmpty() || !kategori.matches("[a-zA-Z\\s]+"));
                     System.out.print("Harga: ");
+<<<<<<< Updated upstream
                     Double harga = input.nextDouble();
+=======
+                    Double harga = -1.0;
+                    String inputStr;
+                    do {
+                        System.out.print("Harga Satuan: ");
+                        inputStr = input.nextLine().trim(); 
+                    
+                        if (inputStr.isEmpty()) {
+                            System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
+                            continue;
+                        }
+                    
+                        if (inputStr.matches("^[0-9]+(\\.[0-9]+)?$")) {
+                            harga = Double.parseDouble(inputStr);
+                            if (harga <= 0) {
+                                System.out.println("Harga harus lebih besar dari 0.");
+                            }
+                        } else {
+                            System.out.println("Input tidak valid. Masukkan angka desimal (misal: 1500.00).");
+                        }
+                    } while (harga <= 0);
+                    String idResep = "RE"; // id resep nanti diubah
+>>>>>>> Stashed changes
                     
                     Produk produk = new Produk(idProduk, nama, kategori, harga);
                     crudp.simpanProduk(produk);
