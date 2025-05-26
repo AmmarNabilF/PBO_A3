@@ -384,9 +384,8 @@ public class Main {
     }
     
     public static void menuPengguna(Scanner input, String idPengguna){
-        DB db = new DB();
+        // DB db = new DB();
         // CrudProduk crudp = new CrudProduk();
-        CrudResep crudr = new CrudResep(db.conn);
         PesanControl pesanControl = new PesanControl();
         int pilih;
         boolean run = true;
@@ -394,11 +393,10 @@ public class Main {
             System.out.println("");
             System.out.println("""
                                ======= MENU PENGGUNA ====
-                                [1] Kelola Bahan Baku 
+                                [1] Lihat Bahan Baku 
                                 [2] Kelola Produk     
-                                [3] Kelola Resep      
-                                [4] Pesan Bahan Baku  
-                                [5] Lihat Riwayat Pesanan 
+                                [3] Pesan Bahan Baku  
+                                [4] Lihat Riwayat Pesanan 
                                 [0] Keluar            
                                ==========================
                                """);
@@ -407,15 +405,15 @@ public class Main {
             
             switch (pilih){
                 case 1:
-                    menuBahanBaku(input);
+                    BahanBakuControl crudb = new BahanBakuControl();
+                    crudb.tampilkanBahanBaku();
+                    System.out.println("Tekan Enter untuk melanjutkan...");
+                    input.nextLine(); 
                     break;
                 case 2:
                     // menuProduk(input, crudp);
                     break;
                 case 3:
-                    menuResep(input, crudr);
-                    break;
-                case 4:
                     pesanBahan(input);
                     System.out.println("\n=== PESAN BAHAN BAKU ===");
                     String idPesanan;
@@ -454,7 +452,7 @@ public class Main {
                         System.out.println("Gagal membuat pesanan");
                     }
                     break;
-                case 5:
+                case 4:
                     System.out.println("\n=== RIWAYAT PESANAN ===");
                     pesanControl.tampilkanRiwayatPesanan(idPengguna);
                     break;
@@ -465,36 +463,6 @@ public class Main {
                     System.out.println("Inputan tidak sesuai");
             }
         } while(run);
-    }
-
-    public static void menuBahanBaku(Scanner input) {
-        BahanBakuControl crudb = new BahanBakuControl();
-        boolean back = false;
-        while (!back) {
-            System.out.println("\n===== MENU BAHAN BAKU =====");
-            System.out.println("[1] Lihat Daftar Bahan Baku");
-            System.out.println("[2] Hapus Bahan Baku");
-            System.out.println("[3] Kembali");
-            System.out.print("Pilih menu: ");
-            int pilih = input.nextInt();
-            input.nextLine();
-
-            switch (pilih) {
-                case 1:
-                    crudb.tampilkanBahanBaku();
-                    break;
-                case 2:
-                    System.out.print("Masukkan ID bahan yang akan dihapus: ");
-                    String idHapus = input.nextLine();
-                    crudb.hapusBahanBaku(idHapus);
-                    break;
-                case 3:
-                    back = true;
-                    break;
-                default:
-                    System.out.println("Pilihan tidak valid.");
-            }
-        }
     }
         
     // public static void menuProduk(Scanner input, CrudProduk crudp){
@@ -594,95 +562,6 @@ public class Main {
     //         }
     //     } while (!back);
     // }
-    
-    public static void menuResep(Scanner input, CrudResep crudr){
-        boolean back = false;
-        
-        while (!back){
-            System.out.println("\nMENU RESEP");
-            System.out.println("[1] Buat resep");
-            System.out.println("[2] Lihat resep");
-            System.out.println("[0] Kembali");
-            System.out.print("Pilih menu: ");
-            int pilih = input.nextInt();
-            input.nextLine();
-            
-            switch(pilih){
-                case 1:
-                    buatResep(crudr, input);
-                    break;
-                case 2:
-                    lihatResep(crudr, input);
-                    break;
-                case 0:
-                    back = true;
-                    break;
-                default:
-                    System.out.println("Inputan tidak tepat");
-            }
-        }
-    }
-    
-    public static void buatResep(CrudResep crudr, Scanner input) {
-        String idResep;
-        try {
-            idResep = crudr.generateIdResep();
-        } catch (Exception e) {
-            System.out.println("Gagal mendapatkan ID Resep");
-            return;
-        }
-
-        System.out.print("Masukkan Nama Resep: ");
-        String namaResep = input.nextLine();
-        System.out.println("=== TAMBAH BAHAN KE RESEP ===");
-
-        boolean tambahBahan = true;
-        while (tambahBahan) {
-            System.out.print("Masukkan ID Bahan: ");
-            String idBahan = input.nextLine();
-            if (idBahan.isEmpty()) {
-                System.out.println("ID Bahan tidak boleh kosong!");
-                continue;
-            }
-
-            System.out.print("Jumlah Digunakan: ");
-            int jmlhDigunakan;
-            try {
-                jmlhDigunakan = Integer.parseInt(input.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Input jumlah tidak valid.");
-                continue;
-            }
-
-            if (jmlhDigunakan <= 0) {
-                System.out.println("Jumlah digunakan harus lebih dari 0!");
-                continue;
-            }
-
-            Resep resep = new Resep(idResep, namaResep, idBahan, jmlhDigunakan);
-            crudr.addResep(resep);
-
-            System.out.print("Tambah bahan lain? (y/n): ");
-            String lanjut = input.nextLine();
-            if (!lanjut.equalsIgnoreCase("y")) {
-                tambahBahan = false;
-            }
-        }
-    System.out.println("Resep '" + namaResep + "' sudah dibuat dengan ID: " + idResep);
-    }
-
-    
-    public static void lihatResep(CrudResep crudr, Scanner input){
-        System.out.println("RESEP PRODUK MARTSA");
-        crudr.showResep();
-        System.out.print("Masukkan ID Resep untuk melihat detail: ");
-        String idResep = input.nextLine();
-        if (idResep.isEmpty()) {
-            System.out.println("ID Resep tidak boleh kosong!");
-            return;
-        }
-        crudr.showDetailResep(idResep);
-    }
     
     public static void pesanBahan(Scanner input){
         input.nextLine();
