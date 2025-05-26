@@ -38,20 +38,48 @@ public class CrudResep {
     }
 
     public void showResep() {
-        String query = "SELECT * FROM tbresep";
+        String query = "SELECT DISTINCT idResep, namaResep FROM tbresep";
         try (PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+            ResultSet rs = stmt.executeQuery()) {
+
+            System.out.println("=== Daftar Resep ===");
             while (rs.next()) {
                 String idResep = rs.getString("idResep");
-                String idBahan = rs.getString("idBahan");
                 String namaResep = rs.getString("namaResep");
-                int jmlhDigunakan = rs.getInt("jmlhDigunakan");
-                System.out.println(new Resep(idResep, namaResep, idBahan, jmlhDigunakan));
+                System.out.println("ID Resep   : " + idResep);
+                System.out.println("Nama Resep : " + namaResep);
+                System.out.println("----------------------------");
             }
+
         } catch (SQLException e) {
             System.err.println("Error showing recipes: " + e.getMessage());
         }
     }
+
+    public void showDetailResep(String idResep) {
+        String query = "SELECT idBahan, jmlhDigunakan FROM tbresep WHERE idResep = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, idResep);
+            try (ResultSet rs = stmt.executeQuery()) {
+                System.out.println("=== Detail Resep ID: " + idResep + " ===");
+                boolean found = false;
+                while (rs.next()) {
+                    found = true;
+                    String idBahan = rs.getString("idBahan");
+                    int jmlh = rs.getInt("jmlhDigunakan");
+                    System.out.println("- ID Bahan       : " + idBahan);
+                    System.out.println("  Jumlah Digunakan: " + jmlh);
+                }
+                if (!found) {
+                    System.out.println("Tidak ada detail untuk resep ini.");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error showing detail: " + e.getMessage());
+        }
+    }
+
+
 
     public boolean delResep(String idResep) {
         String query = "DELETE FROM tbresep WHERE idResep = ?";
