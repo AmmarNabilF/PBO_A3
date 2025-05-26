@@ -15,7 +15,7 @@ public class auth {
         this.conn = conn;
     }
 
-    public static String getCurrentUserId() {
+    public String getCurrentUserId() {
         return currentUserId;
     }
 

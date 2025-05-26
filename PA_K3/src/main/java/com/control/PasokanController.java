@@ -7,6 +7,7 @@ import java.sql.*;
 
 public class PasokanController {
     private Connection conn;
+    private auth auth = new auth(conn);
 
     public PasokanController() {
         DB db = new DB();

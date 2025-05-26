@@ -17,10 +17,19 @@ import com.model.Pesan;
 import com.control.PesanControl;
 
 public class Main {
-    Scanner input = new Scanner(System.in);
     static void cs() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            // Jika gagal, tampilkan baris kosong sebagai fallback
+            for (int i = 0; i < 50; i++) System.out.println();
+        }
     }
 
     public static void main(String[] args) {
@@ -51,8 +60,8 @@ public class Main {
             int menu = input.nextInt();
             input.nextLine(); 
             if (menu == 1) {
+                cs();
                 while (true) {
-                    cs();
                     System.out.println("""
                                        \n===== LOGIN =====
                                         [1] Pemasok
@@ -64,7 +73,7 @@ public class Main {
                     input.nextLine();
                     if (pilihanLogin == 1) {
                         while (login > 0) {
-                            System.out.println("\n>>> !!Masukkan Akun Pemasok!! <<<");
+                            System.out.println("\n>>> MASUKKAN AKUN PEMASOK <<<");
                             String notelp;
                             do {
                                 System.out.print("> Nomor Telepon: ");
@@ -84,8 +93,9 @@ public class Main {
                             try {
                                 Pemasok pemasok = (Pemasok) auth.login(notelp, password);
                                 if (pemasok != null) {
-                                    System.out.println("Login berhasil! Selamat datang, " + pemasok.getNamaPemasok() + "!");
-                                    menuPasokan(input, crudpa, auth.getCurrentUserId());
+                                    String namaPemasok = pemasok.getNamaPemasok();
+                                    cs();
+                                    menuPasokan(input, crudpa, auth.getCurrentUserId(), namaPemasok);
                                     login = 3;
                                     continue menu;  
                                 } else {
@@ -104,7 +114,7 @@ public class Main {
                         }
                     } else if (pilihanLogin == 2) {
                         while (login > 0) {
-                            System.out.println("\n>>> Masukkan Akun Pengguna <<<");
+                            System.out.println("\n>>> MASUKKAN AKUN PENGGUNA <<<");
                             String notelp;
                             do {
                                 System.out.print("> Nomor Telepon: ");
@@ -124,6 +134,7 @@ public class Main {
                             try {
                                 Pengguna pengguna = (Pengguna) auth.login(notelp, password);
                                 if (pengguna != null) {
+                                    cs();
                                     System.out.println("Login berhasil! Selamat datang, " + pengguna.getNamaPengguna() + "!");
                                     menuPengguna(input, auth.getCurrentUserId());
                                     login = 3;
@@ -143,6 +154,7 @@ public class Main {
                             }
                         }
                     } else if (pilihanLogin == 0) {
+                        cs();
                         continue menu;
                     } else {
                         System.out.println("Pilihan tidak valid.");
@@ -207,7 +219,7 @@ public class Main {
                         continue menu;
                     }
                 } else if (pilihanDaftar == 2) {
-                    System.out.println("\n>>> !!DAFTAR AKUN PENGGUNA!! <<<");
+                    System.out.println("\n>>> DAFTAR AKUN PENGGUNA <<<");
                     String idPengguna;
                     try {
                         idPengguna = auth.generateIdPengguna();
@@ -268,9 +280,10 @@ public class Main {
         }
     }
 
-    public static void menuPasokan(Scanner input, PasokanController crudpa, String idPemasok){
+    public static void menuPasokan(Scanner input, PasokanController crudpa, String idPemasok, String namaPemasok){
         int pilih;
         boolean back = false;
+        System.out.println("Selamat Datang, " + namaPemasok + "!");
         while (!back) {
             System.out.println("""
                                 \n===== MENU PASOKAN =====
@@ -336,11 +349,15 @@ public class Main {
                     } while (stok < 0);
                     
                     crudpa.tambahPasokan(idPemasok, namaBahan, hargaSatuan, stok);
+                    System.out.print("\nTekan enter untuk melanjutkan...");
+                    input.nextLine();
+                    cs();
                     break;
                 case 2:
                     crudpa.lihatPasokan();
                     System.out.print("\nTekan enter untuk melanjutkan...");
                     input.nextLine();
+                    cs();
                     break;
                 case 3:
                     crudpa.lihatPasokan();
@@ -394,6 +411,9 @@ public class Main {
                         }
                     } while (newStok < 0);
                     crudpa.updatePasokan(idUpdate, newNama, newHarga, newStok);
+                    System.out.print("\nTekan enter untuk melanjutkan...");
+                    input.nextLine();
+                    cs();
                     break;
                 case 4:
                     crudpa.lihatPasokan();
@@ -401,9 +421,13 @@ public class Main {
                     System.out.print("Masukkan ID Pasokan yang ingin dihapus: ");
                     String idDelete = input.nextLine();
                     crudpa.hapusPasokan(idDelete);
+                    System.out.print("\nTekan enter untuk melanjutkan...");
+                    input.nextLine();
+                    cs();
                     break;
                 case 0:
                     back = true;
+                    cs();
                     break;
                 default:
                     System.out.println("Pilihan tidak valid.");
