@@ -17,6 +17,7 @@ import com.model.Pemasok;
 import com.model.Pengguna;
 import com.model.Pesan;
 import com.control.PesanControl;
+import com.control.ProdukControl;
 
 public class Main {
     public static void main(String[] args) {
@@ -387,7 +388,9 @@ public class Main {
         // DB db = new DB();
         // CrudProduk crudp = new CrudProduk();
         PesanControl pesanControl = new PesanControl();
+        ProdukControl produkControl = new ProdukControl();
         int pilih;
+        String idProduk;
         boolean run = true;
         do {
             System.out.println("");
@@ -402,7 +405,6 @@ public class Main {
                                """);
             System.out.print("Pilih menu: ");
             pilih = input.nextInt();
-            
             switch (pilih){
                 case 1:
                     BahanBakuControl crudb = new BahanBakuControl();
@@ -411,7 +413,44 @@ public class Main {
                     input.nextLine(); 
                     break;
                 case 2:
-                    // menuProduk(input, crudp);
+                    while (true) {
+                        System.out.println("\n=== MENU PRODUK ===");
+                        System.out.println("[1] Tambah Produk");
+                        System.out.println("[2] Lihat Produk");
+                        System.out.println("[3] Ubah Jumlah Produk");
+                        System.out.println("[4] Hapus Produk");
+                        System.out.println("[0] Kembali");
+                        System.out.print("Pilih menu: ");
+                        int pilihan = input.nextInt();
+                        input.nextLine(); // Clear the newline character
+                        
+                        if (pilihan == 0) {
+                            break; // Kembali ke menu utama
+                        }
+                        
+                        switch (pilihan) {
+                            case 1:
+                                produkControl.buatProduk(idPengguna, input);
+                                break;
+                            case 2:
+                                produkControl.tampilkanProduk();
+                                break;
+                            case 3:
+                                System.out.print("Masukkan ID Produk yang ingin diubah: ");
+                                idProduk = input.nextLine();
+                                System.out.println("Masukkan perubahan jumlah:");
+                                int jumlahBaru = input.nextInt();
+                                produkControl.ubahJumlahProduk(idProduk, jumlahBaru);
+                                break;
+                            case 4:
+                                System.out.print("Masukkan ID Produk yang ingin diubah: ");
+                                idProduk = input.nextLine();
+                                produkControl.hapusProduk(idProduk);
+                                break;
+                            default:
+                                System.out.println("Pilihan tidak valid.");
+                        }
+                    }
                     break;
                 case 3:
                     pesanBahan(input);
