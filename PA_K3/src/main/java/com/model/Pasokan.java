@@ -1,6 +1,6 @@
 package com.model;
 
-public class Pasokan {
+public class Pasokan implements InterPasokan {
     private String idPasokan;
     private String idPemasok;
     private String namaBahan;

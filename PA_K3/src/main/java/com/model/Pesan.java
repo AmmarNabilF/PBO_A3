@@ -16,7 +16,13 @@ public class Pesan extends Catatan {
         this.idPengguna = idPengguna;
         this.idPemasok = idPemasok;
         this.tanggalMasuk = tanggalMasuk;
+        this.jumlah = jumlah;
         this.harga = harga;
+    }
+
+    @Override
+    public int getJumlah() { 
+        return jumlah; 
     }
 
     public String getIdPesanan() { 

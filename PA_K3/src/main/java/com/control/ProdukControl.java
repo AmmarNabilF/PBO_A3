@@ -2,7 +2,6 @@ package com.control;
 
 import java.sql.*;
 import java.util.*;
-import com.control.PemakaianControl;
 
 import com.DB;
 

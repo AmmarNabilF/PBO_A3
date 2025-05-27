@@ -5,6 +5,11 @@ public class Pemakaian extends Catatan {
         super(idBahan, jumlah);
     }    
 
+    @Override
+    public int getJumlah() {
+        return jumlah;
+    }
+
     public void setNamaBahan(String namaBahan) {
         this.idBahan = namaBahan;
     }
