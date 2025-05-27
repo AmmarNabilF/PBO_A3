@@ -331,59 +331,65 @@ public class Main {
             input.nextLine();
         }
         }while(true);
-    
+        String inputStr;
             switch (pilih) {
                 case 1:
-                    String namaBahan;
-                    do {
-                        System.out.print("Nama Bahan: ");
-                        namaBahan = input.nextLine();
-                        if (namaBahan.trim().isEmpty()) {
-                            System.out.println("Nama bahan tidak boleh kosong. Silakan coba lagi.");
-                        }
-                    } while (namaBahan.trim().isEmpty());
-                    double hargaSatuan = -1;
-                    String inputStr;
-                    
-                    do {
-                        System.out.print("Harga Satuan: ");
-                        inputStr = input.nextLine().trim(); 
-                    
-                        if (inputStr.isEmpty()) {
-                            System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
-                            continue;
-                        }
-                    
-                        if (inputStr.matches("^[0-9]+(\\.[0-9]+)?$")) {
-                            hargaSatuan = Double.parseDouble(inputStr);
-                            if (hargaSatuan <= 0) {
-                                System.out.println("Harga harus lebih besar dari 0.");
+                    boolean tambahLagi = true;
+                    while (tambahLagi) {
+                        System.out.println("\n=== TAMBAH PASOKAN ===");
+                        String namaBahan;
+                        do {
+                            System.out.print("Nama Bahan: ");
+                            namaBahan = input.nextLine();
+                            if (namaBahan.trim().isEmpty()) {
+                                System.out.println("Nama bahan tidak boleh kosong. Silakan coba lagi.");
                             }
-                        } else {
-                            System.out.println("Input tidak valid. Masukkan angka desimal (misal: 1500.00).");
-                        }
-                    } while (hargaSatuan <= 0);
-                    int stok = -1;
-                    do {
-                        System.out.print("Stok: ");
-                        inputStr = input.nextLine().trim();
-                    
-                        if (inputStr.isEmpty()) {
-                            System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
-                            continue;
-                        }
-                    
-                        if (inputStr.matches("\\d+")) { 
-                            stok = Integer.parseInt(inputStr);
-                            if (stok < 0) {
-                                System.out.println("Stok tidak boleh negatif.");
+                        } while (namaBahan.trim().isEmpty());
+                        double hargaSatuan = -1;
+                        do {
+                            System.out.print("Harga Satuan: ");
+                            inputStr = input.nextLine().trim();
+
+                            if (inputStr.isEmpty()) {
+                                System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
+                                continue;
                             }
-                        } else {
-                            System.out.println("Input tidak valid. Masukkan angka bulat (misal: 10).");
+
+                            if (inputStr.matches("^[0-9]+(\\.[0-9]+)?$")) {
+                                hargaSatuan = Double.parseDouble(inputStr);
+                                if (hargaSatuan <= 0) {
+                                    System.out.println("Harga harus lebih besar dari 0.");
+                                }
+                            } else {
+                                System.out.println("Input tidak valid. Masukkan angka desimal (misal: 1500.00).");
+                            }
+                        } while (hargaSatuan <= 0);
+                        int stok = -1;
+                        do {
+                            System.out.print("Stok: ");
+                            inputStr = input.nextLine().trim();
+
+                            if (inputStr.isEmpty()) {
+                                System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
+                                continue;
+                            }
+
+                            if (inputStr.matches("\\d+")) {
+                                stok = Integer.parseInt(inputStr);
+                                if (stok < 0) {
+                                    System.out.println("Stok tidak boleh negatif.");
+                                }
+                            } else {
+                                System.out.println("Input tidak valid. Masukkan angka bulat (misal: 10).");
+                            }
+                        } while (stok < 0);
+                        crudpa.tambahPasokan(idPemasok, namaBahan, hargaSatuan, stok);
+                        System.out.print("\nTambah pasokan lagi? (y/n): ");
+                        String jawab = input.nextLine().trim();
+                        if (!jawab.equalsIgnoreCase("y")) {
+                            tambahLagi = false;
                         }
-                    } while (stok < 0);
-                    
-                    crudpa.tambahPasokan(idPemasok, namaBahan, hargaSatuan, stok);
+                    }
                     lanjut();
                     cs();
                     break;
@@ -412,10 +418,10 @@ public class Main {
                     do{
                         System.out.print("Nama Pasokan baru: ");
                         newNama = input.nextLine();
-                        if(newNama.trim().isEmpty() || !newNama.matches("[a-zA-Z\\s]+")) {
+                        if(newNama.trim().isEmpty()) {
                             System.out.println("Nama pasokan tidak sesuai. Silakan coba lagi.");
                         }
-                    }while (newNama.trim().isEmpty() || !newNama.matches("[a-zA-Z\\s]+"));
+                    }while (newNama.trim().isEmpty());
                     double newHarga = -1; 
                     do {
                         System.out.print("Harga Satuan: ");
@@ -463,7 +469,7 @@ public class Main {
                     System.out.println("\n=== HAPUS PASOKAN ===");
                     String idDelete;
                     do{
-                        System.out.println("Masukkan ID Pasokan yang ingin dihapus: ");
+                        System.out.print("Masukkan ID Pasokan yang ingin dihapus: ");
                        idDelete = input.nextLine();
                         if(idDelete.trim().isEmpty()) {
                             System.out.println("ID pasokan tidak sesuai. Silakan coba lagi.");
