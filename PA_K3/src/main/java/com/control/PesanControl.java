@@ -16,7 +16,9 @@ public class PesanControl {
     }
 
     public void tampilkanDaftarPasokan() {
-        String sql = "SELECT * FROM tbpasokan";
+        String sql = "SELECT p.idPasokan, p.namaBahan, p.hargaSatuan, p.stok, s.namaPemasok " +
+                     "FROM tbpasokan p " +
+                     "JOIN tbpemasok s ON p.idPemasok = s.idPemasok";
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             System.out.println("Daftar Bahan Baku Tersedia:");
@@ -25,7 +27,8 @@ public class PesanControl {
                         "ID: " + rs.getString("idPasokan") +
                         ", Nama: " + rs.getString("namaBahan") +
                         ", Harga Satuan: " + rs.getDouble("hargaSatuan") +
-                        ", Stok: " + rs.getInt("stok")
+                        ", Stok: " + rs.getInt("stok") +
+                        ", Pemasok: " + rs.getString("namaPemasok")
                 );
             }
         } catch (SQLException e) {
@@ -34,8 +37,8 @@ public class PesanControl {
     }
 
     public void buatPesanan(String idPesanan, String idPengguna, String idPasokan, int jumlahPesan) {
-        // Ambil data pasokan
-        String getPasokanSql = "SELECT namaBahan, hargaSatuan, stok FROM tbpasokan WHERE idPasokan = ?";
+        // Ambil data pasokan beserta idPemasok
+        String getPasokanSql = "SELECT namaBahan, hargaSatuan, stok, idPemasok FROM tbpasokan WHERE idPasokan = ?";
         try (PreparedStatement ps = conn.prepareStatement(getPasokanSql)) {
             ps.setString(1, idPasokan);
             ResultSet rs = ps.executeQuery();
@@ -44,6 +47,7 @@ public class PesanControl {
                 String namaBahan = rs.getString("namaBahan");
                 double hargaSatuan = rs.getDouble("hargaSatuan");
                 int stokTersedia = rs.getInt("stok");
+                String idPemasok = rs.getString("idPemasok");
                 if (jumlahPesan > stokTersedia) {
                     System.out.println("Stok tidak mencukupi! Stok tersedia: " + stokTersedia);
                     return;
@@ -52,14 +56,15 @@ public class PesanControl {
                 String tanggalSekarang = LocalDate.now().toString();
 
                 // Simpan ke tbpesanan
-                String insertPesananSql = "INSERT INTO tbpesanan (idPesanan, idPengguna, idBahan, tanggalMasuk, jumlah, harga) VALUES (?, ?, ?, ?, ?, ?)";
+                String insertPesananSql = "INSERT INTO tbpesanan (idPesanan, idPengguna, idBahan, idPemasok, tanggalMasuk, jumlah, harga) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement insertStmt = conn.prepareStatement(insertPesananSql)) {
                     insertStmt.setString(1, idPesanan);
                     insertStmt.setString(2, idPengguna);
                     insertStmt.setString(3, idPasokan);
-                    insertStmt.setString(4, tanggalSekarang);
-                    insertStmt.setInt(5, jumlahPesan);
-                    insertStmt.setDouble(6, totalHarga);
+                    insertStmt.setString(4, idPemasok);
+                    insertStmt.setString(5, tanggalSekarang);
+                    insertStmt.setInt(6, jumlahPesan);
+                    insertStmt.setDouble(7, totalHarga);
                     insertStmt.executeUpdate();
                     System.out.println("Pesanan berhasil dibuat.");
                 }
@@ -94,13 +99,22 @@ public class PesanControl {
                                   "ID Pesanan", "ID Bahan", "Tanggal", "Jumlah", "Total Harga");
                 System.out.println("==================================================================");
                 while (rs.next()) {
-                    String idPesanan = rs.getString("idPesanan");
-                    String idBahan = rs.getString("idBahan");
-                    LocalDate tanggal = rs.getDate("tanggalMasuk").toLocalDate();
-                    int jumlah = rs.getInt("jumlah");
-                    double harga = rs.getDouble("harga");
+                    Pesan pesan = new Pesan(
+                        rs.getString("idPesanan"),
+                        rs.getString("idPengguna"),
+                        rs.getString("idBahan"),
+                        rs.getString("idPemasok"),
+                        rs.getDate("tanggalMasuk").toLocalDate(),
+                        rs.getInt("jumlah"),
+                        rs.getDouble("harga")
+                    );
                     System.out.printf("| %-10s | %-10s | %-12s | %-6d | %-12.2f |\n",
-                                      idPesanan, idBahan, tanggal, jumlah, harga);
+                        pesan.getIdPesanan(),
+                        pesan.getIdBahan(),
+                        pesan.getTanggalMasuk(),
+                        pesan.getJumlah(),
+                        pesan.getHarga()
+                    );
                 }
                 System.out.println("==================================================================");
             }

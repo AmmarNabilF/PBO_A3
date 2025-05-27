@@ -3,21 +3,34 @@ package com.model;
 import java.time.LocalDate;
 
 public class Pesan extends Catatan {
+    private String idPesanan;
     private String idPengguna;
+    private String idPemasok;
     private LocalDate tanggalMasuk;
     private int jumlah;
     private double harga;
 
-    public Pesan(String idPengguna, String idBahan, LocalDate tanggalMasuk, int jumlah, double harga) {
+    public Pesan(String idPesanan, String idPengguna, String idPemasok, String idBahan, LocalDate tanggalMasuk, int jumlah, double harga) {
         super(idBahan, jumlah);
+        this.idPesanan = idPesanan;
         this.idPengguna = idPengguna;
+        this.idPemasok = idPemasok;
         this.tanggalMasuk = tanggalMasuk;
         this.harga = harga;
+    }
+
+    public String getIdPesanan() { 
+        return idPesanan; 
     }
 
     public String getIdPengguna() { 
         return idPengguna; 
     }
+
+    public String getIdPemasok() { 
+        return idPemasok; 
+    }
+
     public LocalDate getTanggalMasuk() { 
         return tanggalMasuk; 
     }
@@ -29,8 +42,10 @@ public class Pesan extends Catatan {
     @Override
     public String toString() {
         return "Pesan{" +
+                "idPesanan='" + idPesanan + '\'' +
                 "idPengguna='" + idPengguna + '\'' +
-                ", idPasokan='" + idBahan + '\'' +
+                ", idBahan='" + idBahan + '\'' +
+                ", idPemasok='" + idPemasok + '\'' +
                 ", tanggalMasuk=" + tanggalMasuk +
                 ", jumlah=" + jumlah +
                 ", harga=" + harga +

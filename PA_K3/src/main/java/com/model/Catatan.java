@@ -17,4 +17,12 @@ public class Catatan {
     public int getJumlah() {
         return jumlah;
     }
+
+    public void setIdBahan(String idBahan) {
+        this.idBahan = idBahan;
+    }
+
+    public void setJumlah(int jumlah) {
+        this.jumlah = jumlah;
+    }
 }

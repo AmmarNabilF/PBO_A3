@@ -2,6 +2,7 @@ package com.control;
 
 import java.sql.*;
 import java.util.*;
+import com.control.PemakaianControl;
 
 import com.DB;
 
@@ -67,18 +68,18 @@ public class ProdukControl {
             }
 
             // Simpan ke tbdetail dan tbpemakaian
+            PemakaianControl pemakaianControl = new PemakaianControl();
             for (Map.Entry<String, Integer> entry : bahanMap.entrySet()) {
                 String idBahan = entry.getKey();
                 int jumlah = entry.getValue();
 
-                // tbdetail
+                // Simpan ke tbdetail
                 String checkDetail = "SELECT * FROM tbdetail WHERE idProduk = ? AND idBahan = ?";
                 try (PreparedStatement check = conn.prepareStatement(checkDetail)) {
                     check.setString(1, idProduk);
                     check.setString(2, idBahan);
                     ResultSet rs = check.executeQuery();
                     if (rs.next()) {
-                        // update jumlah
                         String updateDetail = "UPDATE tbdetail SET jumlah = jumlah + ? WHERE idProduk = ? AND idBahan = ?";
                         try (PreparedStatement update = conn.prepareStatement(updateDetail)) {
                             update.setInt(1, jumlah);
@@ -87,7 +88,6 @@ public class ProdukControl {
                             update.executeUpdate();
                         }
                     } else {
-                        // insert baru
                         String insertDetail = "INSERT INTO tbdetail (idProduk, idBahan, jumlah) VALUES (?, ?, ?)";
                         try (PreparedStatement insert = conn.prepareStatement(insertDetail)) {
                             insert.setString(1, idProduk);
@@ -97,36 +97,9 @@ public class ProdukControl {
                         }
                     }
                 }
-
-                // tbpemakaian
-                String checkPemakaian = "SELECT * FROM tbpemakaian WHERE idPengguna = ? AND idBahan = ? AND keterangan = ?";
-                try (PreparedStatement check = conn.prepareStatement(checkPemakaian)) {
-                    check.setString(1, idPengguna);
-                    check.setString(2, idBahan);
-                    check.setString(3, namaProduk);
-                    ResultSet rs = check.executeQuery();
-                    if (rs.next()) {
-                        String updatePemakaian = "UPDATE tbpemakaian SET jumlah = jumlah + ? WHERE idPengguna = ? AND idBahan = ? AND keterangan = ?";
-                        try (PreparedStatement update = conn.prepareStatement(updatePemakaian)) {
-                            update.setInt(1, jumlah);
-                            update.setString(2, idPengguna);
-                            update.setString(3, idBahan);
-                            update.setString(4, namaProduk);
-                            update.executeUpdate();
-                        }
-                    } else {
-                        String insertPemakaian = "INSERT INTO tbpemakaian (idPengguna, idBahan, jumlah, keterangan) VALUES (?, ?, ?, ?)";
-                        try (PreparedStatement insert = conn.prepareStatement(insertPemakaian)) {
-                            insert.setString(1, idPengguna);
-                            insert.setString(2, idBahan);
-                            insert.setInt(3, jumlah);
-                            insert.setString(4, namaProduk);
-                            insert.executeUpdate();
-                        }
-                    }
-                }
             }
 
+            pemakaianControl.simpanPemakaian(idPengguna, namaProduk, bahanMap);
             conn.commit();
             System.out.println("Produk berhasil dibuat.");
         } catch (SQLException e) {

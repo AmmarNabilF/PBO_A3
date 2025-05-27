@@ -4,8 +4,10 @@ import com.control.BahanBakuControl;
 
 import com.control.CrudResep;
 import com.control.PasokanController;
+import com.control.PemakaianControl;
 import com.model.BahanBaku;
 import com.model.Pasokan;
+import com.model.Pemakaian;
 import com.model.Produk;
 import com.model.Resep;
 import com.model.TransaksiMasuk;
@@ -389,6 +391,7 @@ public class Main {
         // CrudProduk crudp = new CrudProduk();
         PesanControl pesanControl = new PesanControl();
         ProdukControl produkControl = new ProdukControl();
+        PemakaianControl pemakaianControl = new PemakaianControl();
         int pilih;
         String idProduk;
         boolean run = true;
@@ -400,6 +403,7 @@ public class Main {
                                 [2] Kelola Produk     
                                 [3] Pesan Bahan Baku  
                                 [4] Lihat Riwayat Pesanan 
+                                [5] Lihat Pemakaian Bahan
                                 [0] Keluar            
                                ==========================
                                """);
@@ -453,7 +457,6 @@ public class Main {
                     }
                     break;
                 case 3:
-                    pesanBahan(input);
                     System.out.println("\n=== PESAN BAHAN BAKU ===");
                     String idPesanan;
                     try {
@@ -495,6 +498,12 @@ public class Main {
                     System.out.println("\n=== RIWAYAT PESANAN ===");
                     pesanControl.tampilkanRiwayatPesanan(idPengguna);
                     break;
+                case 5:
+                    System.out.println("\n=== RIWAYAT PEMAKAIAN ===");
+                    pemakaianControl.lihatRiwayatPemakaian();
+                    for (Pemakaian pemakaian : pemakaianControl.lihatRiwayatPemakaian()) {
+                        System.out.println("Nama Bahan: " + pemakaian.getNamaBahan() + ", Jumlah: " + pemakaian.getJumlah());
+                    }
                 case 0:
                     run = false;
                     break;
