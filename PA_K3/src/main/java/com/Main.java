@@ -338,10 +338,10 @@ public class Main {
                     do {
                         System.out.print("Nama Bahan: ");
                         namaBahan = input.nextLine();
-                        if (namaBahan.trim().isEmpty() || !namaBahan.matches("[a-zA-Z\\s]+")) {
-                            System.out.println("Nama bahan tidak sesuai. Silakan coba lagi.");
+                        if (namaBahan.trim().isEmpty()) {
+                            System.out.println("Nama bahan tidak boleh kosong. Silakan coba lagi.");
                         }
-                    } while (namaBahan.trim().isEmpty() || !namaBahan.matches("[a-zA-Z\\s]+"));
+                    } while (namaBahan.trim().isEmpty());
                     double hargaSatuan = -1;
                     String inputStr;
                     
@@ -401,6 +401,10 @@ public class Main {
                         idUpdate = input.nextLine().trim(); 
                         if (idUpdate.isEmpty()) {
                             System.out.println("ID Pasokan tidak boleh kosong. Silakan coba lagi.");
+                        }
+                        if (!crudpa.cekPasokan(idUpdate)) {
+                            System.out.println("ID Pasokan tidak ditemukan. Silakan coba lagi.");
+                            idUpdate = "";
                         }
                     } while (idUpdate.isEmpty());
 
@@ -552,12 +556,17 @@ public class Main {
                                 lanjut();
                                 break;
                             case 3:
-                                idProduk = input.nextLine();
                                 do {
+                                    produkControl.tampilkanProduk();
+                                    System.out.println("\n=== UBAH JUMLAH PRODUK ===");
                                     System.out.print("Masukkan ID Produk yang ingin diubah: ");
                                     idProduk = input.nextLine();
                                     if (idProduk.trim().isEmpty()) {
                                         System.out.println("ID produk tidak boleh kosong. Silakan coba lagi.");
+                                    }
+                                    if (!produkControl.cekIdProduk(idProduk)) {
+                                        System.out.println("ID Produk tidak ditemukan. Silakan coba lagi.");
+                                        idProduk = "";
                                     }
                                 } while (idProduk.trim().isEmpty());
                                 int jumlahBaru = -1;
@@ -584,6 +593,8 @@ public class Main {
                                 break;
                             case 4:
                                 do {
+                                    produkControl.tampilkanProduk();
+                                    System.out.println("\n=== HAPUS PRODUK ===");
                                     System.out.print("Masukkan ID Produk yang ingin dihapus: ");
                                     idProduk = input.nextLine().trim();
 
@@ -647,13 +658,10 @@ public class Main {
                     lanjut();
                     break;
                 case 4:
-                    // System.out.println("\n==================================================================");
-                    // System.out.println("========================= RIWAYAT PESANAN ========================");
                     pesanControl.tampilkanRiwayatPesanan(idPengguna);
                     lanjut();
                     break;
                 case 5:
-                    // System.out.println("\n=== RIWAYAT PEMAKAIAN ===");
                     pemakaianControl.lihatRiwayatPemakaian();
                     lanjut();
                     break;

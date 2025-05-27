@@ -218,6 +218,19 @@ public class ProdukControl {
         }
     }
 
+    public boolean cekIdProduk(String idProduk) {
+        String sql = "SELECT * FROM tbproduk WHERE idProduk = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, idProduk);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            System.out.println("Gagal mengecek ID produk: " + e.getMessage());
+            return false;
+        }
+    }
+
     public void ubahJumlahProduk(String idProduk, int jumlahBaru) {
         String sql = "UPDATE tbproduk SET jumlah = ? WHERE idProduk = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {

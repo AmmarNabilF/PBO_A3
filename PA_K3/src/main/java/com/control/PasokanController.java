@@ -70,6 +70,18 @@ public class PasokanController {
         }
     }
 
+    public boolean cekPasokan(String idPasokan) {
+        String sql = "SELECT * FROM tbpasokan WHERE idPasokan = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, idPasokan);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            System.out.println("Gagal mengecek pasokan: " + e.getMessage());
+            return false;
+        }
+    }
+
     public void updatePasokan(String idPasokan, String namaBaru, double hargaBaru, int stokBaru) {
         String sql = "UPDATE tbpasokan SET namaBahan = ?, hargaSatuan = ?, stok = ? WHERE idPasokan = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
