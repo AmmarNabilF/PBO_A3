@@ -22,9 +22,14 @@ public class Main {
                 System.out.flush();
             }
         } catch (Exception e) {
-            // Jika gagal, tampilkan baris kosong sebagai fallback
             for (int i = 0; i < 50; i++) System.out.println();
         }
+    }
+
+    static void lanjut() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("\nTekan enter untuk melanjutkan...");
+        input.nextLine();
     }
 
     public static void main(String[] args) {
@@ -122,7 +127,7 @@ public class Main {
                                     }
                                 }
                             } catch (Exception e) {
-                                System.out.println("Koneksi Terputus");
+                                System.out.println("Login Gagal!");
                             }
                         }
                     } else if (pilihanLogin == 2) {
@@ -148,7 +153,7 @@ public class Main {
                                 Pengguna pengguna = (Pengguna) auth.login(notelp, password);
                                 if (pengguna != null) {
                                     cs();
-                                    System.out.println("Login berhasil! Selamat datang, " + pengguna.getNamaPengguna() + "!");
+                                    System.out.println("Selamat datang, " + pengguna.getNamaPengguna() + "!");
                                     menuPengguna(input, auth.getCurrentUserId());
                                     login = 3;
                                     continue menu;
@@ -163,7 +168,7 @@ public class Main {
                                     }
                                 }
                             } catch (Exception e) {
-                                System.out.println("Koneksi Terputus");
+                                System.out.println("Login Gagal!");
                             }
                         }
                     } else if (pilihanLogin == 0) {
@@ -379,14 +384,12 @@ public class Main {
                     } while (stok < 0);
                     
                     crudpa.tambahPasokan(idPemasok, namaBahan, hargaSatuan, stok);
-                    System.out.print("\nTekan enter untuk melanjutkan...");
-                    input.nextLine();
+                    lanjut();
                     cs();
                     break;
                 case 2:
                     crudpa.lihatPasokan();
-                    System.out.print("\nTekan enter untuk melanjutkan...");
-                    input.nextLine();
+                    lanjut();
                     cs();
                     break;
                 case 3:
@@ -441,8 +444,7 @@ public class Main {
                         }
                     } while (newStok < 0);
                     crudpa.updatePasokan(idUpdate, newNama, newHarga, newStok);
-                    System.out.print("\nTekan enter untuk melanjutkan...");
-                    input.nextLine();
+                    lanjut();
                     cs();
                     break;
                 case 4:
@@ -457,8 +459,7 @@ public class Main {
                         }
                     }while (idDelete.trim().isEmpty());
                     crudpa.hapusPasokan(idDelete);
-                    System.out.print("\nTekan enter untuk melanjutkan...");
-                    input.nextLine();
+                    lanjut();
                     cs();
                     break;
                 case 0:
@@ -472,17 +473,15 @@ public class Main {
     }
     
     public static void menuPengguna(Scanner input, String idPengguna){
-        // DB db = new DB();
-        // CrudProduk crudp = new CrudProduk();
         PesanControl pesanControl = new PesanControl();
         ProdukControl produkControl = new ProdukControl();
         PemakaianControl pemakaianControl = new PemakaianControl();
         String idProduk;
         boolean run = true;
         do {
-            System.out.println("");
+            cs();
             System.out.println("""
-                               ====== MENU PENGGUNA ======
+                               \n====== MENU PENGGUNA ======
                                 [1] Lihat Bahan Baku 
                                 [2] Kelola Produk     
                                 [3] Pesan Bahan Baku  
@@ -506,17 +505,19 @@ public class Main {
                 case 1:
                     BahanBakuControl crudb = new BahanBakuControl();
                     crudb.tampilkanBahanBaku();
-                    System.out.print("\nTekan enter untuk melanjutkan...");
-                    input.nextLine();
+                    lanjut();
                     break;
                 case 2:
                     while (true) {
-                        System.out.println("\n=== MENU PRODUK ===");
-                        System.out.println("[1] Tambah Produk");
-                        System.out.println("[2] Lihat Produk");
-                        System.out.println("[3] Ubah Jumlah Produk");
-                        System.out.println("[4] Hapus Produk");
-                        System.out.println("[0] Kembali");
+                        cs();
+                        System.out.println("""
+                                           \n====== MENU PRODUK ======
+                                            [1] Tambah Produk        
+                                            [2] Lihat Produk         
+                                            [3] Ubah Jumlah Produk   
+                                            [4] Hapus Produk         
+                                            [0] Kembali              
+                                           ==========================""");
                         System.out.print("Pilih menu: ");
                         int pilihan;
                         do {
@@ -531,15 +532,17 @@ public class Main {
                             }
                         } while (true);
                         if (pilihan == 0) {
-                            break; // Kembali ke menu utama
+                            break;
                         }
                         
                         switch (pilihan) {
                             case 1:
                                 produkControl.buatProduk(idPengguna, input);
+                                lanjut();
                                 break;
                             case 2:
                                 produkControl.tampilkanProduk();
+                                lanjut();
                                 break;
                             case 3:
                                 idProduk = input.nextLine();
@@ -570,11 +573,13 @@ public class Main {
                                     }
                                 } while (jumlahBaru < 0);
                                 produkControl.ubahJumlahProduk(idProduk, jumlahBaru);
+                                lanjut();
                                 break;
                             case 4:
                                 System.out.print("Masukkan ID Produk yang ingin dihapus: ");
                                 idProduk = input.nextLine();
                                 produkControl.hapusProduk(idProduk);
+                                lanjut();
                                 break;
                             default:
                                 System.out.println("Pilihan tidak valid.");
@@ -618,10 +623,13 @@ public class Main {
                     } catch (Exception e) {
                         System.out.println("Gagal membuat pesanan");
                     }
+                    lanjut();
                     break;
                 case 4:
-                    System.out.println("\n=== RIWAYAT PESANAN ===");
+                    System.out.println("\n==================================================================");
+                    System.out.println("========================= RIWAYAT PESANAN ========================");
                     pesanControl.tampilkanRiwayatPesanan(idPengguna);
+                    lanjut();
                     break;
                 case 5:
                     System.out.println("\n=== RIWAYAT PEMAKAIAN ===");
@@ -629,6 +637,8 @@ public class Main {
                     for (Pemakaian pemakaian : pemakaianControl.lihatRiwayatPemakaian()) {
                         System.out.println("Nama Bahan: " + pemakaian.getNamaBahan() + ", Jumlah: " + pemakaian.getJumlah());
                     }
+                    lanjut();
+                    break;
                 case 0:
                     run = false;
                     break;
