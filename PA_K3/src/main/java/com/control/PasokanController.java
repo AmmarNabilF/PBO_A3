@@ -30,16 +30,19 @@ public class PasokanController {
     }
 
     public void lihatPasokan() {
-        System.out.println("\nDaftar Pasokan Tersedia:");
-        System.out.println("-------------------------------------------------------------------------------");
-        System.out.println(String.format("%-12s | %-25s | %-15s | %-5s", 
-                                     "ID Pasokan", "Nama Bahan", "Harga Satuan", "Stok"));
-        System.out.println("-------------------------------------------------------------------------------");
         String sql = "SELECT * FROM tbpasokan WHERE idPemasok = ?";
         boolean found = false;
+        String format = "| %-12s | %-25s | %-13s | %-4s |\n";
+        String line = "+--------------+---------------------------+---------------+------+"; 
+        
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, auth.getCurrentUserId());
             try (ResultSet rs = stmt.executeQuery()) {
+                System.out.println("\nDaftar Pasokan:");
+                System.out.println(line);
+                System.out.printf(format, "ID Pasokan", "Nama Bahan", "Harga Satuan", "Stok");
+                System.out.println(line);
+
                 while (rs.next()) {
                     Pasokan p = new Pasokan(
                         rs.getString("idPasokan"),
@@ -48,12 +51,19 @@ public class PasokanController {
                         rs.getDouble("hargaSatuan"),
                         rs.getInt("stok")
                     );
-                    System.out.println(p);
+                    System.out.printf(format,
+                        p.getIdPasokan(),
+                        p.getNamaBahan(),
+                        String.format("%.2f", p.getHargaSatuan()),
+                        p.getStok()
+                    );
                     found = true;
                 }
-            }
-            if (!found) {
-                System.out.println("Data pasokan kosong.");
+                System.out.println(line);
+
+                if (!found) {
+                    System.out.println("Data pasokan kosong.");
+                }
             }
         } catch (SQLException e) {
             System.out.println("Gagal menampilkan pasokan: " + e.getMessage());

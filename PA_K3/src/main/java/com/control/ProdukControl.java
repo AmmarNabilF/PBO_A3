@@ -192,7 +192,7 @@ public class ProdukControl {
         String line = "+------------+---------------------------+--------+";
         try (Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)) {
-            System.out.println("Daftar Produk:");
+            System.out.println("\nDaftar Produk:");
             System.out.println(line);
             System.out.printf(format, "ID Produk", "Nama Produk", "Jumlah");
             System.out.println(line);

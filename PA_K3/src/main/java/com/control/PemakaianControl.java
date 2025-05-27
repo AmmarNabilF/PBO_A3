@@ -60,7 +60,7 @@ public class PemakaianControl {
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
 
-            System.out.println("Riwayat Pemakaian Bahan Baku:");
+            System.out.println("\nRiwayat Pemakaian Bahan Baku:");
             System.out.println(line);
             System.out.printf(format, "No", "Nama Bahan", "Jumlah");
             System.out.println(line);

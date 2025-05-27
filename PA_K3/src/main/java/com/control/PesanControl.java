@@ -15,19 +15,33 @@ public class PesanControl {
 
     public void tampilkanDaftarPasokan() {
         String sql = "SELECT p.idPasokan, p.namaBahan, p.hargaSatuan, p.stok, s.namaPemasok " +
-                     "FROM tbpasokan p " +
-                     "JOIN tbpemasok s ON p.idPemasok = s.idPemasok";
+                    "FROM tbpasokan p " +
+                    "JOIN tbpemasok s ON p.idPemasok = s.idPemasok";
+        boolean found = false;
+        String format = "| %-12s | %-25s | %-13s | %-4s | %-20s |\n";
+        String line   = "+--------------+---------------------------+---------------+------+----------------------+";
+
         try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+            ResultSet rs = stmt.executeQuery(sql)) {
             System.out.println("Daftar Bahan Baku Tersedia:");
+            System.out.println(line);
+            System.out.printf(format, "ID Pasokan", "Nama Bahan", "Harga Satuan", "Stok", "Nama Pemasok");
+            System.out.println(line);
+
             while (rs.next()) {
-                System.out.println(
-                        "ID: " + rs.getString("idPasokan") +
-                        ", Nama: " + rs.getString("namaBahan") +
-                        ", Harga Satuan: " + rs.getDouble("hargaSatuan") +
-                        ", Stok: " + rs.getInt("stok") +
-                        ", Pemasok: " + rs.getString("namaPemasok")
+                System.out.printf(format,
+                    rs.getString("idPasokan"),
+                    rs.getString("namaBahan"),
+                    String.format("%.2f", rs.getDouble("hargaSatuan")),
+                    rs.getInt("stok"),
+                    rs.getString("namaPemasok")
                 );
+                found = true;
+            }
+
+            System.out.println(line);
+            if (!found) {
+                System.out.println("Data pasokan kosong.");
             }
         } catch (SQLException e) {
             System.out.println("Gagal menampilkan daftar pasokan: " + e.getMessage());
@@ -94,15 +108,18 @@ public class PesanControl {
                     "JOIN tbbahanbaku b ON p.idBahan = b.idBahan " +
                     "JOIN tbpemasok s ON p.idPemasok = s.idPemasok " +
                     "WHERE p.idPengguna = ?";
+        boolean found = false;
+        String format = "| %-12s | %-20s | %-12s | %-6s | %-12s | %-20s |\n";
+        String line = "+--------------+----------------------+--------------+--------+--------------+----------------------+";
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, idPengguna);
             try (ResultSet rs = stmt.executeQuery()) {
-                System.out.println("==================================================================================================");
-                System.out.printf("| %-11s | %-20s | %-12s | %-6s | %-12s | %-20s |\n",
-                        "ID Pesanan", "Nama Bahan", "Tanggal", "Jumlah", "Harga", "Nama Pemasok");
-                System.out.println("==================================================================================================");
+                System.out.println("\nRiwayat Pesanan:");
+                System.out.println(line);
+                System.out.printf(format, "ID Pesanan", "Nama Bahan", "Tanggal", "Jumlah", "Harga", "Nama Pemasok");
+                System.out.println(line);
 
-                boolean found = false;
                 while (rs.next()) {
                     Pesan pesan = new Pesan(
                             rs.getString("idPesanan"),
@@ -115,19 +132,19 @@ public class PesanControl {
                             rs.getString("namaBahan"),
                             rs.getString("namaPemasok")
                     );
-                    System.out.printf("| %-11s | %-20s | %-12s | %-6d | %-12.2f | %-20s |\n",
+                    System.out.printf(format,
                             pesan.getIdPesanan(),
                             pesan.getNamaBahan(),
                             pesan.getTanggalMasuk(),
                             pesan.getJumlah(),
-                            pesan.getHarga(),
+                            String.format("%.2f", pesan.getHarga()),
                             pesan.getNamaPemasok()
                     );
                     found = true;
                 }
-                System.out.println("==================================================================================================");
+                System.out.println(line);
                 if (!found) {
-                    System.out.println("Tidak ada data riwayat pesanan.");
+                    System.out.println("Data riwayat pesanan kosong.");
                 }
             }
         } catch (SQLException e) {
