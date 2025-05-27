@@ -1,5 +1,6 @@
 package com.model;
 
+// -- modul Interface menerapkan InterPasokan --
 public class Pasokan implements InterPasokan {
     private String idPasokan;
     private String idPemasok;

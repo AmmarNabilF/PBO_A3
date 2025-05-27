@@ -1,5 +1,6 @@
 package com.model;
 
+// -- modul Abstract Class dan Parent Class Catatan --
 public abstract class Catatan {
     protected String idBahan;
     protected int jumlah;
@@ -14,6 +15,7 @@ public abstract class Catatan {
         return idBahan;
     }
 
+    // -- modul Abstract Method jumlah --
     public abstract int getJumlah();
 
     public void setIdBahan(String idBahan) {

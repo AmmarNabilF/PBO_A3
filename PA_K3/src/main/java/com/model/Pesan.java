@@ -2,8 +2,9 @@ package com.model;
 
 import java.time.LocalDate;
 
+// -- modul Inheritance Pesan child dari Catatan --
 public class Pesan extends Catatan {
-    private String idPesanan;
+    private final String idPesanan; // -- modul final variabel --
     private String idPengguna;
     private String idPemasok;
     private LocalDate tanggalMasuk;
@@ -26,6 +27,7 @@ public class Pesan extends Catatan {
         this.namaPemasok = namaPemasok;
     }
 
+    // -- modul Polymorphism (overriding) jumlah --
     @Override
     public int getJumlah() {
         return jumlah;

@@ -1,7 +1,7 @@
 package com;
 import java.sql.*;
 
-public class DB {
+public final class DB {
     public Connection conn;
     public DB() {
         try {

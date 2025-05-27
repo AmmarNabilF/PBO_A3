@@ -1,10 +1,8 @@
 package com;
 import com.auth.auth;
 import com.control.BahanBakuControl;
-
 import com.control.PasokanController;
 import com.control.PemakaianControl;
-import com.model.Pemakaian;
 import java.util.Scanner;
 import com.model.Pemasok;
 import com.model.Pengguna;
@@ -12,7 +10,8 @@ import com.control.PesanControl;
 import com.control.ProdukControl;
 
 public class Main {
-    static void cs() {
+    // -- modul Static dan final method --
+    final static void cs() {
         try {
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("windows")) {
@@ -61,11 +60,11 @@ public class Main {
             System.out.print("Pilih menu: ");
             if (input.hasNextInt()) {
                 menu = input.nextInt();
-                input.nextLine(); // konsumsi newline
+                input.nextLine();
                 break;
             } else {
                 System.out.println("Input harus berupa angka! Silakan coba lagi.");
-                input.nextLine(); // buang input salah
+                input.nextLine();
             }
         } while (true);
             if (menu == 1) {

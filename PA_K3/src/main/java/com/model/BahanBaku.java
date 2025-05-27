@@ -16,13 +16,4 @@ public class BahanBaku {
     public int getStok() { return stok; }
 
     public void setStok(int stok) { this.stok = stok; }
-
-    @Override
-    public String toString() {
-        return "BahanBaku{" +
-                "idBahan='" + idBahan + '\'' +
-                ", namaBahan='" + namaBahan + '\'' +
-                ", stok=" + stok +
-                '}';
-    }
 }

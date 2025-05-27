@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.model;
 
-/**
- *
- * @author ammar
- */
 public final class Pemasok {
     private String idPemasok;
     private String namaPemasok;
@@ -51,10 +43,5 @@ public final class Pemasok {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-    
-    public void terimaPesanan(String namabahan, int jumlah, String satuan){
-        System.out.println("Pemasok atas nama " + namaPemasok + " telah menerima pesanan anda");
-        System.out.println("Detail pesanan: " + namabahan + "[" + jumlah + satuan + "]");
     }
 }

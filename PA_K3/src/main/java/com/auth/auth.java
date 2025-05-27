@@ -9,7 +9,7 @@ import com.model.Pemasok;
 
 public class auth {
     private Connection conn;
-    private static String currentUserId;
+    private static String currentUserId; // -- modul Static variabel id --
 
     public auth(Connection conn) {
         this.conn = conn;
@@ -43,6 +43,7 @@ public class auth {
         return false;
     }
 
+    // -- modul Polymorphism (overloading) register --
     public void register(Pemasok pemasok) throws SQLException {
         if (isPhoneNumberExists(pemasok.getNomorTelepon())) {
             throw new SQLException("duplikat");
@@ -60,6 +61,7 @@ public class auth {
         }
     }
 
+    // -- modul Polymorphism (overloading) register --
     public void register(Pengguna pengguna) throws SQLException {
         if (isPhoneNumberExists(pengguna.getNomorTelepon())) {
             throw new SQLException("duplikat");

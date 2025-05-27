@@ -1,5 +1,6 @@
 package com.model;
 
+// modul Inheritance pemakaian child dari Catatan
 public class Pemakaian extends Catatan {
     public Pemakaian(String idBahan, int jumlah) {
         super(idBahan, jumlah);
