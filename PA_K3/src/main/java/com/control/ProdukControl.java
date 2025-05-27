@@ -39,21 +39,39 @@ public class ProdukControl {
         boolean tambah = true;
         while (tambah) {
             System.out.print("Masukkan ID Bahan: ");
-            String idBahan = input.nextLine();
+            String idBahan = input.nextLine().trim();
+            if (idBahan.isEmpty()) {
+                System.out.println("ID Bahan tidak boleh kosong.");
+                continue;
+            }
 
             System.out.print("Masukkan jumlah bahan yang digunakan: ");
+            while (!input.hasNextInt()) {
+                System.out.println("Masukkan angka yang valid.");
+                input.next(); // skip non-int
+            }
             int jumlah = input.nextInt();
-            input.nextLine();
+            input.nextLine(); // Buang newline
 
             bahanMap.put(idBahan, bahanMap.getOrDefault(idBahan, 0) + jumlah);
 
             System.out.print("Tambah bahan lagi? (y/n): ");
-            tambah = input.nextLine().equalsIgnoreCase("y");
+            String lanjut = input.nextLine().trim();
+            tambah = lanjut.equalsIgnoreCase("y");
+        }
+
+        if (bahanMap.isEmpty()) {
+            System.out.println("Tidak ada bahan yang dimasukkan. Gagal membuat produk.");
+            return;
         }
 
         System.out.print("Masukkan jumlah produk yang dihasilkan: ");
+        while (!input.hasNextInt()) {
+            System.out.println("Masukkan angka yang valid.");
+            input.next(); // skip non-int
+        }
         int jumlahProduk = input.nextInt();
-        input.nextLine();
+        input.nextLine(); // Buang newline
 
         try {
             conn.setAutoCommit(false);
@@ -99,6 +117,7 @@ public class ProdukControl {
                 }
             }
 
+            // Catat pemakaian
             pemakaianControl.simpanPemakaian(idPengguna, namaProduk, bahanMap);
             conn.commit();
             System.out.println("Produk berhasil dibuat.");
@@ -117,6 +136,7 @@ public class ProdukControl {
             }
         }
     }
+
 
     public void tampilkanProduk() {
         String sql = "SELECT * FROM tbproduk";
