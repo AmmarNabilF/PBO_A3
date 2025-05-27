@@ -70,7 +70,6 @@ public class BahanBakuControl {
             ResultSet rs = cekStmt.executeQuery();
 
             if (rs.next()) {
-                // Jika idBahan sudah ada, update stok
                 try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
                     updateStmt.setInt(1, jumlahTambahan);
                     updateStmt.setString(2, idBahan);
@@ -78,7 +77,6 @@ public class BahanBakuControl {
                     System.out.println("Stok bahan baku diperbarui.");
                 }
             } else {
-                // Jika tidak ada, insert baru
                 try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
                     insertStmt.setString(1, idBahan);
                     insertStmt.setString(2, namaBahan);

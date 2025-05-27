@@ -17,7 +17,6 @@ public class PasokanController {
     public void tambahPasokan(String idPemasok, String namaBahan, double hargaSatuan, int stok) {
         String sql = "INSERT INTO tbpasokan (idPemasok, namaBahan, hargaSatuan, stok) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            // stmt.setString(1, idPasokan);
             stmt.setString(1, idPemasok);
             stmt.setString(2, namaBahan);
             stmt.setDouble(3, hargaSatuan);

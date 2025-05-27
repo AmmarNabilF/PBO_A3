@@ -23,7 +23,7 @@ public class PesanControl {
 
         try (Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)) {
-            System.out.println("Daftar Bahan Baku Tersedia:");
+            System.out.println("Daftar Pasokan Bahan Baku:");
             System.out.println(line);
             System.out.printf(format, "ID Pasokan", "Nama Bahan", "Harga Satuan", "Stok", "Nama Pemasok");
             System.out.println(line);
@@ -49,7 +49,6 @@ public class PesanControl {
     }
 
     public void buatPesanan(String idPesanan, String idPengguna, String idPasokan, int jumlahPesan) {
-        // Ambil data pasokan beserta idPemasok
         String getPasokanSql = "SELECT namaBahan, hargaSatuan, stok, idPemasok FROM tbpasokan WHERE idPasokan = ?";
         try (PreparedStatement ps = conn.prepareStatement(getPasokanSql)) {
             ps.setString(1, idPasokan);
@@ -67,7 +66,6 @@ public class PesanControl {
                 double totalHarga = hargaSatuan * jumlahPesan;
                 String tanggalSekarang = LocalDate.now().toString();
 
-                // Simpan ke tbpesanan
                 String insertPesananSql = "INSERT INTO tbpesanan (idPesanan, idPengguna, idBahan, idPemasok, tanggalMasuk, jumlah, harga) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement insertStmt = conn.prepareStatement(insertPesananSql)) {
                     insertStmt.setString(1, idPesanan);
@@ -81,7 +79,6 @@ public class PesanControl {
                     System.out.println("Pesanan berhasil dibuat.");
                 }
 
-                // Kurangi stok pasokan
                 String updateStokSql = "UPDATE tbpasokan SET stok = stok - ? WHERE idPasokan = ?";
                 try (PreparedStatement updateStmt = conn.prepareStatement(updateStokSql)) {
                     updateStmt.setInt(1, jumlahPesan);
@@ -90,7 +87,6 @@ public class PesanControl {
                     System.out.println("Stok pasokan dikurangi sebanyak " + jumlahPesan);
                 }
 
-                // Tambahkan ke bahan baku
                 BahanBakuControl bbControl = new BahanBakuControl();
                 bbControl.tambahAtauUpdateBahanBaku(idPasokan, namaBahan, jumlahPesan);
             } else {

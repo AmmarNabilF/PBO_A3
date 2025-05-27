@@ -116,7 +116,6 @@ public class ProdukControl {
         try {
             conn.setAutoCommit(false);
 
-            // Simpan ke tbproduk
             String sqlProduk = "INSERT INTO tbproduk (idProduk, namaProduk, jumlah) VALUES (?, ?, ?)";
             try (PreparedStatement stmt = conn.prepareStatement(sqlProduk)) {
                 stmt.setString(1, idProduk);
@@ -125,13 +124,11 @@ public class ProdukControl {
                 stmt.executeUpdate();
             }
 
-            // Simpan ke tbdetail dan update stok tbbahanbaku
             PemakaianControl pemakaianControl = new PemakaianControl();
             for (Map.Entry<String, Integer> entry : bahanMap.entrySet()) {
                 String idBahan = entry.getKey();
                 int jumlah = entry.getValue();
-
-                // Simpan ke tbdetail
+                
                 String checkDetail = "SELECT * FROM tbdetail WHERE idProduk = ? AND idBahan = ?";
                 try (PreparedStatement check = conn.prepareStatement(checkDetail)) {
                     check.setString(1, idProduk);
