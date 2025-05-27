@@ -51,9 +51,18 @@ public class Main {
                                  [2] Daftar
                                  [0] Keluar
                                 ==============================""");
+        int menu;
+        do {
             System.out.print("Pilih menu: ");
-            int menu = input.nextInt();
-            input.nextLine(); 
+            if (input.hasNextInt()) {
+                menu = input.nextInt();
+                input.nextLine(); // konsumsi newline
+                break;
+            } else {
+                System.out.println("Input harus berupa angka! Silakan coba lagi.");
+                input.nextLine(); // buang input salah
+            }
+        } while (true);
             if (menu == 1) {
                 cs();
                 while (true) {
@@ -63,9 +72,18 @@ public class Main {
                                         [2] Pengguna
                                         [0] Kembali
                                        =================""");
-                    System.out.print("Pilih menu: ");
-                    int pilihanLogin = input.nextInt();
+            int pilihanLogin;
+            do {
+                System.out.print("Pilih menu: ");
+                if (input.hasNextInt()) {
+                    pilihanLogin = input.nextInt();
                     input.nextLine();
+                    break;
+                } else {
+                    System.out.println("Input harus berupa angka! Silakan coba lagi.");
+                    input.nextLine();
+                }
+            } while (true);
                     if (pilihanLogin == 1) {
                         while (login > 0) {
                             System.out.println("\n>>> MASUKKAN AKUN PEMASOK <<<");
@@ -164,9 +182,18 @@ public class Main {
                                     [2] Pengguna
                                     [0] Kembali
                                    ==================""");
+                int pilihanDaftar;
+                do {
                 System.out.print("Pilih menu: ");
-                int pilihanDaftar = input.nextInt();
-                input.nextLine();
+                if (input.hasNextInt()) {
+                    pilihanDaftar = input.nextInt();
+                    input.nextLine();
+                    break;
+                } else {
+                    System.out.println("Input harus berupa angka! Silakan coba lagi.");
+                    input.nextLine();
+                }
+                } while (true);
                 if (pilihanDaftar == 1) {
                     System.out.println("\n>>> DAFTAR AKUN PEMASOK <<<");
                     String idPemasok;
@@ -288,9 +315,17 @@ public class Main {
                                   [4] Hapus Pasokan
                                   [0] Kembali
                                 ========================""");
-            System.out.print("Pilih menu: ");
+        do {
+        System.out.print("Pilih menu: ");
+        if (input.hasNextInt()) {
             pilih = input.nextInt();
+            input.nextLine(); 
+            break; 
+        } else {
+            System.out.println("Input harus berupa angka! Silakan coba lagi.");
             input.nextLine();
+        }
+        }while(true);
     
             switch (pilih) {
                 case 1:
@@ -413,8 +448,14 @@ public class Main {
                 case 4:
                     crudpa.lihatPasokan();
                     System.out.println("\n=== HAPUS PASOKAN ===");
-                    System.out.print("Masukkan ID Pasokan yang ingin dihapus: ");
-                    String idDelete = input.nextLine();
+                    String idDelete;
+                    do{
+                        System.out.println("Masukkan ID Pasokan yang ingin dihapus: ");
+                       idDelete = input.nextLine();
+                        if(idDelete.trim().isEmpty()) {
+                            System.out.println("ID pasokan tidak sesuai. Silakan coba lagi.");
+                        }
+                    }while (idDelete.trim().isEmpty());
                     crudpa.hapusPasokan(idDelete);
                     System.out.print("\nTekan enter untuk melanjutkan...");
                     input.nextLine();
@@ -436,7 +477,6 @@ public class Main {
         PesanControl pesanControl = new PesanControl();
         ProdukControl produkControl = new ProdukControl();
         PemakaianControl pemakaianControl = new PemakaianControl();
-        int pilih;
         String idProduk;
         boolean run = true;
         do {
@@ -450,8 +490,18 @@ public class Main {
                                 [5] Lihat Pemakaian Bahan
                                 [0] Keluar            
                                ===========================""");
-            System.out.print("Pilih menu: ");
-            pilih = input.nextInt();
+            int pilih;
+            do {
+                System.out.print("Pilih menu: ");
+                if (input.hasNextInt()) {
+                    pilih = input.nextInt();
+                    input.nextLine();
+                    break;
+                } else {
+                    System.out.println("Input harus berupa angka! Silakan coba lagi.");
+                    input.nextLine();
+                }
+            } while (true);
             switch (pilih){
                 case 1:
                     BahanBakuControl crudb = new BahanBakuControl();
@@ -468,9 +518,18 @@ public class Main {
                         System.out.println("[4] Hapus Produk");
                         System.out.println("[0] Kembali");
                         System.out.print("Pilih menu: ");
-                        int pilihan = input.nextInt();
-                        input.nextLine(); // Clear the newline character
-                        
+                        int pilihan;
+                        do {
+                            System.out.print("Pilih menu: ");
+                            if (input.hasNextInt()) {
+                                pilihan = input.nextInt();
+                                input.nextLine();
+                                break;
+                            } else {
+                                System.out.println("Input harus berupa angka! Silakan coba lagi.");
+                                input.nextLine();
+                            }
+                        } while (true);
                         if (pilihan == 0) {
                             break; // Kembali ke menu utama
                         }
@@ -483,14 +542,37 @@ public class Main {
                                 produkControl.tampilkanProduk();
                                 break;
                             case 3:
-                                System.out.print("Masukkan ID Produk yang ingin diubah: ");
                                 idProduk = input.nextLine();
-                                System.out.println("Masukkan perubahan jumlah:");
-                                int jumlahBaru = input.nextInt();
+                                do {
+                                    System.out.print("Masukkan ID Produk yang ingin diubah: ");
+                                    idProduk = input.nextLine();
+                                    if (idProduk.trim().isEmpty()) {
+                                        System.out.println("ID produk tidak boleh kosong. Silakan coba lagi.");
+                                    }
+                                } while (idProduk.trim().isEmpty());
+                                int jumlahBaru = -1;
+                                do {
+                                    System.out.print("Masukkan jumlah baru: ");
+                                    String inputStr = input.nextLine().trim();
+                                    
+                                    if (inputStr.isEmpty()) {
+                                        System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
+                                        continue;
+                                    }
+                                    
+                                    if (inputStr.matches("\\d+")) { 
+                                        jumlahBaru = Integer.parseInt(inputStr);
+                                        if (jumlahBaru < 0) {
+                                            System.out.println("Jumlah harus lebih besar dari atau sama dengan 0.");
+                                        }
+                                    } else {
+                                        System.out.println("Input tidak valid. Masukkan angka bulat (misal: 10).");
+                                    }
+                                } while (jumlahBaru < 0);
                                 produkControl.ubahJumlahProduk(idProduk, jumlahBaru);
                                 break;
                             case 4:
-                                System.out.print("Masukkan ID Produk yang ingin diubah: ");
+                                System.out.print("Masukkan ID Produk yang ingin dihapus: ");
                                 idProduk = input.nextLine();
                                 produkControl.hapusProduk(idProduk);
                                 break;
