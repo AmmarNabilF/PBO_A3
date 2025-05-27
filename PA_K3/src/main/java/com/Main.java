@@ -4,18 +4,10 @@ import com.control.BahanBakuControl;
 
 import com.control.PasokanController;
 import com.control.PemakaianControl;
-import com.model.BahanBaku;
-import com.model.Pasokan;
 import com.model.Pemakaian;
-import com.model.Produk;
-import com.model.TransaksiMasuk;
 import java.util.Scanner;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import com.model.Transaksi;
 import com.model.Pemasok;
 import com.model.Pengguna;
-import com.model.Pesan;
 import com.control.PesanControl;
 import com.control.ProdukControl;
 
@@ -562,137 +554,5 @@ public class Main {
                     System.out.println("Inputan tidak sesuai");
             }
         } while(run);
-    }
-        
-    // public static void menuProduk(Scanner input, CrudProduk crudp){
-    //     int pilih;
-    //     boolean back = true;
-    //     do {
-    //         System.out.println(" ");
-    //         System.out.println("MENU PRODUK");
-    //         System.out.println("[1] Tambah produk");
-    //         System.out.println("[2] Lihat produk");
-    //         System.out.println("[3] Cari produk");
-    //         System.out.println("[4] Perbarui produk");
-    //         System.out.println("[5] Hapus produk");
-    //         System.out.println("[0] Kembali");
-    //         System.out.print("Pilih menu: ");
-    //         pilih = input.nextInt();
-    //         input.nextLine();
-            
-    //         switch (pilih){
-    //             case 1:
-    //                 System.out.print("ID Produk: ");
-    //                 String idProduk = input.nextLine();
-    //                 System.out.print("Nama Produk: ");
-    //                 String nama = input.nextLine();                    
-    //                 System.out.print("Kategori Produk: ");
-    //                 String kategori = input.nextLine();
-    //                 System.out.print("Harga: ");
-    //                 Double harga = input.nextDouble();
-    //                 String idResep = "RE"; // id resep nanti diubah
-                    
-    //                 Produk produk = new Produk(idProduk, idResep, nama, kategori, harga);
-    //                 crudp.simpanProduk(produk);
-    //                 System.out.println("Produk berhasil ditambahkan");
-    //                 break;
-                    
-    //             case 2:
-    //                 System.out.println("DAFTAR PRODUK MARTSA");
-    //                 crudp.showProduk();
-    //                 break;
-                    
-    //             case 3:
-    //                 System.out.println("\nCARI PRODUK DENGAN NAMA ATAU ID\n");
-    //                 System.out.print("Cari: ");
-    //                 String keyword = input.nextLine();
-                    
-    //                 Produk hasil = crudp.searchProduk(keyword);
-                    
-    //                 if (hasil == null){
-    //                     hasil = crudp.searchProduk(keyword, true);
-    //                 }
-    //                 if (hasil != null){
-    //                     System.out.println("Produk ditemukan");
-    //                     System.out.println(hasil);
-    //                 }
-    //                 else{
-    //                     System.out.println("Produk tidak ditemukan");
-    //                 }
-                    
-    //                 break;
-                    
-    //             case 4:
-    //                 System.out.print("Masukkan ID produk yang ingin diubah: ");
-    //                 String newID = input.nextLine();
-    //                 System.out.print("Nama baru: ");
-    //                 String newNama = input.nextLine();
-    //                 System.out.print("Kategori: ");
-    //                 String newKategori = input.nextLine();
-    //                 System.out.print("Harga baru: ");
-    //                 Double newHarga = input.nextDouble();
-                    
-    //                 if (crudp.updateProduk(newID, newNama, newKategori, newHarga)){
-    //                     System.out.println("Produk telah diperbarui");
-    //                 }
-    //                 else {
-    //                     System.out.println("Produk tidak ditemukan");
-    //                 }
-    //                 break;
-                    
-    //             case 5:
-    //                 System.out.print("Masukkan ID produk yang ingin dihapus: ");
-    //                 String delID = input.nextLine();
-                    
-    //                 if (crudp.delProduk(delID)){
-    //                     System.out.println("Produk dihapus!!");
-    //                 }
-    //                 else {
-    //                     System.out.println("Produk gagal dihapus :( ");
-    //                 }
-    //                 break;
-                
-    //             case 0:
-    //                 back = true;
-    //                 break;
-                    
-    //             default:
-    //                 System.out.println("Inputan pilih tidak tepat");
-    //         }
-    //     } while (!back);
-    // }
-    
-    public static void pesanBahan(Scanner input){
-        input.nextLine();
-        
-        String idTransaksi = Transaksi.generateId("TR");
-
-        System.out.print("ID Bahan: ");
-        String idBahan = input.nextLine();
-        System.out.print("ID Pemasok: ");
-        String idPemasok = input.nextLine();
-        System.out.print("Tanggal masuk(YYYY-MM-DD): ");
-        String tanggal = input.nextLine();
-        LocalDate tanggalMasuk = LocalDate.parse(tanggal);
-        System.out.print("Jumlah: ");
-        int jumlah = input.nextInt();
-        System.out.print("Harga per unit: ");
-        double hargaUnit = input.nextDouble();
-        System.out.println("");
-        TransaksiMasuk transaksi = new TransaksiMasuk(idTransaksi, idBahan, idPemasok, tanggalMasuk, jumlah, hargaUnit);
-        transaksi.cetakResi();
-        transaksi.informasi();
-    }
-    
-    public static LocalDate inputTanggal(Scanner input, String teks){
-        while(true){
-            System.out.print(teks + " (YYYY-MM-DD): ");
-            String tanggal = input.nextLine();
-            try{
-                return LocalDate.parse(tanggal);
-            } catch(DateTimeParseException e){
-                System.out.println("Format tidak sesuai, coba lagi!!");
-            }  
-        }
     }
 }

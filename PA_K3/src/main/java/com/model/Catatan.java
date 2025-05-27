@@ -1,6 +1,6 @@
 package com.model;
 
-public class Catatan {
+public abstract class Catatan {
     protected String idBahan;
     protected int jumlah;
     protected String idPengguna;
@@ -14,9 +14,7 @@ public class Catatan {
         return idBahan;
     }
 
-    public int getJumlah() {
-        return jumlah;
-    }
+    public abstract int getJumlah();
 
     public void setIdBahan(String idBahan) {
         this.idBahan = idBahan;
