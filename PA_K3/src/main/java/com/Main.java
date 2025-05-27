@@ -472,7 +472,7 @@ public class Main {
                             System.out.println("Input tidak valid. Masukkan angka bulat (misal: 10).");
                         }
                     } while (newStok < 0);
-                    crudpa.updatePasokan(idUpdate, newNama, newHarga, newStok);
+                    crudpa.updatePasokan(idUpdate, newNama, newHarga, newStok, idPemasok);
                     lanjut();
                     cs();
                     break;
@@ -493,7 +493,7 @@ public class Main {
                             System.out.println("ID pasokan tidak sesuai. Silakan coba lagi.");
                         }
                     }while (idDelete.trim().isEmpty());
-                    crudpa.hapusPasokan(idDelete);
+                    crudpa.hapusPasokan(idDelete, idPemasok);
                     lanjut();
                     cs();
                     break;
