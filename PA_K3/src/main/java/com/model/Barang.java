@@ -11,12 +11,24 @@ public abstract class Barang {
         this.stok = stok;
     }
 
-    public String getId() { return id; }
-    public String getNama() { return nama; }
-    public int getStok() { return stok; }
-    public void setStok(int stok) { this.stok = stok; }
-    public void setNama(String nama) { this.nama = nama; }
-    public void setId(String id) { this.id = id; }
+    public String getId() { 
+        return id; 
+    }
+    public String getNama() { 
+        return nama; 
+    }
+    public int getStok() { 
+        return stok; 
+    }
+    public void setStok(int stok) { 
+        this.stok = stok;
+    }
+    public void setNama(String nama) { 
+        this.nama = nama;
+    }
+    public void setId(String id) {
+        this.id = id; 
+    }
 
     // Method abstract, wajib diisi oleh subclass
     public abstract void tampilkanInfo();

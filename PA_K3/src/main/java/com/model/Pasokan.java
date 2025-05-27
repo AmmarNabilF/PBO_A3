@@ -10,9 +10,15 @@ public class Pasokan extends Barang {
         this.hargaSatuan = hargaSatuan;
     }
 
-    public String getIdPemasok() { return idPemasok; }
-    public double getHargaSatuan() { return hargaSatuan; }
-    public void setHargaSatuan(double hargaSatuan) { this.hargaSatuan = hargaSatuan; }
+    public String getIdPemasok() { 
+        return idPemasok; 
+    }
+    public double getHargaSatuan() { 
+        return hargaSatuan; 
+    }
+    public void setHargaSatuan(double hargaSatuan) {
+        this.hargaSatuan = hargaSatuan; 
+    }
 
     @Override
     public void tampilkanInfo() {
