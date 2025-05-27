@@ -52,8 +52,18 @@ public class PemakaianControl {
             """;
 
         java.util.List<Pemakaian> riwayat = new java.util.ArrayList<>();
+        String format = "| %-6s | %-25s | %-6s |\n";
+        String line = "+--------+---------------------------+--------+";
+        boolean found = false;
+        int no = 1;
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
+
+            System.out.println("Riwayat Pemakaian Bahan Baku:");
+            System.out.println(line);
+            System.out.printf(format, "No", "Nama Bahan", "Jumlah");
+            System.out.println(line);
 
             while (rs.next()) {
                 Pemakaian pemakaian = new Pemakaian(
@@ -64,7 +74,20 @@ public class PemakaianControl {
                 pemakaian.setNamaBahan(rs.getString("namaBahan"));
                 pemakaian.setJumlah(rs.getInt("jumlah"));
                 riwayat.add(pemakaian);
+
+                System.out.printf(format,
+                    no++,
+                    pemakaian.getNamaBahan(),
+                    pemakaian.getJumlah()
+                );
+                found = true;
             }
+            System.out.println(line);
+
+            if (!found) {
+                System.out.println("Data riwayat pemakaian kosong.");
+            }
+
         } catch (SQLException e) {
             System.err.println("Gagal menampilkan riwayat pemakaian: " + e.getMessage());
         }

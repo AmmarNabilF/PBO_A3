@@ -292,6 +292,7 @@ public class Main {
                         return;
                     }
                 }else if (pilihanDaftar == 0) {
+                    cs();
                     continue menu;
                 } else {
                     System.out.println("Pilihan tidak valid.");
@@ -626,17 +627,14 @@ public class Main {
                     lanjut();
                     break;
                 case 4:
-                    System.out.println("\n==================================================================");
-                    System.out.println("========================= RIWAYAT PESANAN ========================");
+                    // System.out.println("\n==================================================================");
+                    // System.out.println("========================= RIWAYAT PESANAN ========================");
                     pesanControl.tampilkanRiwayatPesanan(idPengguna);
                     lanjut();
                     break;
                 case 5:
-                    System.out.println("\n=== RIWAYAT PEMAKAIAN ===");
+                    // System.out.println("\n=== RIWAYAT PEMAKAIAN ===");
                     pemakaianControl.lihatRiwayatPemakaian();
-                    for (Pemakaian pemakaian : pemakaianControl.lihatRiwayatPemakaian()) {
-                        System.out.println("Nama Bahan: " + pemakaian.getNamaBahan() + ", Jumlah: " + pemakaian.getJumlah());
-                    }
                     lanjut();
                     break;
                 case 0:
