@@ -3,8 +3,8 @@ package com.model;
 public class Pengguna {
     private String idPengguna;
     private String namaPengguna;
-    protected String nomorTelepon;
-    protected String password;
+    private String nomorTelepon;
+    private String password;
     
     public Pengguna(String idPengguna, String namaPengguna, String nomorTelepon, String password){
         this.idPengguna = idPengguna;

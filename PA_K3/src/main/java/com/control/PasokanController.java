@@ -96,7 +96,7 @@ public class PasokanController {
     }
 
     public void updatePasokan(String idPasokan, String namaBaru, double hargaBaru, int stokBaru) {
-        String sql = "UPDATE tbpasokan SET namaBahan = ?, hargaSatuan = ?, stok = ? WHERE idPasokan = ?";
+        String sql = "UPDATE tbpasokan SET namaBahan = ?, hargaSatuan = ?, stok = ? WHERE idPasokan = ? AND idPemasok = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, namaBaru);
             stmt.setDouble(2, hargaBaru);
@@ -114,7 +114,7 @@ public class PasokanController {
     }
 
     public void hapusPasokan(String idPasokan) {
-        String sql = "DELETE FROM tbpasokan WHERE idPasokan = ?";
+        String sql = "DELETE FROM tbpasokan WHERE idPasokan = ? AND idPemasok = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, idPasokan);
             int rowsDeleted = stmt.executeUpdate();

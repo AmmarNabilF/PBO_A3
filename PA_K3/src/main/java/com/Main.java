@@ -625,14 +625,13 @@ public class Main {
                                 lanjut();
                                 break;
                             case 4:
+                                if (!produkControl.cekIsiProduk()) {
+                                    System.out.println("\nTidak ada produk yang tersedia untuk dihapus.");
+                                    lanjut();
+                                    break;
+                                }
                                 do {
                                     produkControl.tampilkanProduk();
-                                    if (!produkControl.cekIsiProduk()) {
-                                        System.out.println("Tidak ada produk yang tersedia untuk dihapus.");
-                                        idProduk = "";
-                                        lanjut();
-                                        break;
-                                    }
                                     System.out.println("\n=== HAPUS PRODUK ===");
                                     System.out.print("Masukkan ID Produk yang ingin dihapus: ");
                                     idProduk = input.nextLine().trim();
