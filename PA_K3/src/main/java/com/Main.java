@@ -396,8 +396,15 @@ public class Main {
                 case 3:
                     crudpa.lihatPasokan();
                     System.out.println("\n=== UBAH PASOKAN ===");
-                    System.out.print("Masukkan ID Pasokan yang ingin diubah: ");
-                    String idUpdate = input.nextLine();
+                    String idUpdate;
+                    do {
+                        System.out.print("Masukkan ID Pasokan yang ingin diubah: ");
+                        idUpdate = input.nextLine().trim(); 
+                        if (idUpdate.isEmpty()) {
+                            System.out.println("ID Pasokan tidak boleh kosong. Silakan coba lagi.");
+                        }
+                    } while (idUpdate.isEmpty());
+
                     String newNama;
                     do{
                         System.out.print("Nama Pasokan baru: ");
@@ -577,10 +584,18 @@ public class Main {
                                 lanjut();
                                 break;
                             case 4:
-                                System.out.print("Masukkan ID Produk yang ingin dihapus: ");
-                                idProduk = input.nextLine();
+                                do {
+                                    System.out.print("Masukkan ID Produk yang ingin dihapus: ");
+                                    idProduk = input.nextLine().trim();
+
+                                    if (idProduk.isEmpty()) {
+                                        System.out.println("ID Produk tidak boleh kosong. Silakan coba lagi.");
+                                    }
+                                } while (idProduk.isEmpty());
+
                                 produkControl.hapusProduk(idProduk);
                                 lanjut();
+
                                 break;
                             default:
                                 System.out.println("Pilihan tidak valid.");
@@ -598,8 +613,14 @@ public class Main {
                     }
                     pesanControl.tampilkanDaftarPasokan();
                     Scanner sc = new Scanner(System.in);
-                    System.out.print("Masukkan ID Pasokan yang ingin dipesan: ");
-                    String idPasokan = sc.nextLine();
+                    String idPasokan;
+                    do {
+                        System.out.print("Masukkan ID Pasokan yang ingin dipesan: ");
+                        idPasokan = sc.nextLine().trim(); 
+                        if (idPasokan.isEmpty()) {
+                            System.out.println("ID Pasokan tidak boleh kosong. Silakan coba lagi.");
+                        }
+                    } while (idPasokan.isEmpty());
                     int jumlahPesan = -1;
                     do{
                         System.out.print("Jumlah Pesan: ");
