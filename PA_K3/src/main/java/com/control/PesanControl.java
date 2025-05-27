@@ -88,33 +88,47 @@ public class PesanControl {
     }
 
     public void tampilkanRiwayatPesanan(String idPengguna) {
-        String sql = "SELECT * FROM tbpesanan WHERE idPengguna = ?";
+        String sql = "SELECT p.idPesanan, p.idPengguna, p.idPemasok, p.idBahan, p.tanggalMasuk, p.jumlah, p.harga, " +
+                    "b.namaBahan, s.namaPemasok " +
+                    "FROM tbpesanan p " +
+                    "JOIN tbbahanbaku b ON p.idBahan = b.idBahan " +
+                    "JOIN tbpemasok s ON p.idPemasok = s.idPemasok " +
+                    "WHERE p.idPengguna = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, idPengguna);
             try (ResultSet rs = stmt.executeQuery()) {
-                System.out.println("==================================================================");
-                System.out.printf("| %-10s | %-10s | %-12s | %-6s | %-12s |\n", 
-                                  "ID Pesanan", "ID Bahan", "Tanggal", "Jumlah", "Total Harga");
-                System.out.println("==================================================================");
+                System.out.println("==================================================================================================");
+                System.out.printf("| %-11s | %-20s | %-12s | %-6s | %-12s | %-20s |\n",
+                        "ID Pesanan", "Nama Bahan", "Tanggal", "Jumlah", "Harga", "Nama Pemasok");
+                System.out.println("==================================================================================================");
+
+                boolean found = false;
                 while (rs.next()) {
                     Pesan pesan = new Pesan(
-                        rs.getString("idPesanan"),
-                        rs.getString("idPengguna"),
-                        rs.getString("idBahan"),
-                        rs.getString("idPemasok"),
-                        rs.getDate("tanggalMasuk").toLocalDate(),
-                        rs.getInt("jumlah"),
-                        rs.getDouble("harga")
+                            rs.getString("idPesanan"),
+                            rs.getString("idPengguna"),
+                            rs.getString("idPemasok"),
+                            rs.getString("idBahan"),
+                            rs.getDate("tanggalMasuk").toLocalDate(),
+                            rs.getInt("jumlah"),
+                            rs.getDouble("harga"),
+                            rs.getString("namaBahan"),
+                            rs.getString("namaPemasok")
                     );
-                    System.out.printf("| %-10s | %-10s | %-12s | %-6d | %-12.2f |\n",
-                        pesan.getIdPesanan(),
-                        pesan.getIdBahan(),
-                        pesan.getTanggalMasuk(),
-                        pesan.getJumlah(),
-                        pesan.getHarga()
+                    System.out.printf("| %-11s | %-20s | %-12s | %-6d | %-12.2f | %-20s |\n",
+                            pesan.getIdPesanan(),
+                            pesan.getNamaBahan(),
+                            pesan.getTanggalMasuk(),
+                            pesan.getJumlah(),
+                            pesan.getHarga(),
+                            pesan.getNamaPemasok()
                     );
+                    found = true;
                 }
-                System.out.println("==================================================================");
+                System.out.println("==================================================================================================");
+                if (!found) {
+                    System.out.println("Tidak ada data riwayat pesanan.");
+                }
             }
         } catch (SQLException e) {
             System.out.println("Gagal menampilkan daftar pesanan: " + e.getMessage());

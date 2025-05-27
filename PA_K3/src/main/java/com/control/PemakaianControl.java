@@ -34,9 +34,8 @@ public class PemakaianControl {
                 } else {
                     String insertSql = "INSERT INTO tbpemakaian (idBahan, jumlah) VALUES (?, ?)";
                     try (PreparedStatement insert = conn.prepareStatement(insertSql)) {
-                        insert.setString(1, idPengguna);
-                        insert.setString(2, idBahan);
-                        insert.setInt(3, jumlah);
+                        insert.setString(1, idBahan);
+                        insert.setInt(2, jumlah);
                         insert.executeUpdate();
                     }
                 }

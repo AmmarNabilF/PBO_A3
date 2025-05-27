@@ -17,12 +17,5 @@ public class Pemakaian extends Catatan {
     public String getNamaBahan() {
         return idBahan;
     }
-
-    @Override
-    public String toString() {
-        return "Pemakaian{" +
-                "idBahan='" + idBahan + '\'' +
-                ", jumlah=" + jumlah +
-                '}';
-    }
+    
 }
