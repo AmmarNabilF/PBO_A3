@@ -9,8 +9,12 @@ public class Pesan extends Catatan {
     private LocalDate tanggalMasuk;
     private int jumlah;
     private double harga;
+    private String namaBahan;
+    private String namaPemasok;
 
-    public Pesan(String idPesanan, String idPengguna, String idPemasok, String idBahan, LocalDate tanggalMasuk, int jumlah, double harga) {
+    public Pesan(String idPesanan, String idPengguna, String idPemasok, String idBahan,
+                 LocalDate tanggalMasuk, int jumlah, double harga,
+                 String namaBahan, String namaPemasok) {
         super(idBahan, jumlah);
         this.idPesanan = idPesanan;
         this.idPengguna = idPengguna;
@@ -18,43 +22,40 @@ public class Pesan extends Catatan {
         this.tanggalMasuk = tanggalMasuk;
         this.jumlah = jumlah;
         this.harga = harga;
+        this.namaBahan = namaBahan;
+        this.namaPemasok = namaPemasok;
     }
 
     @Override
-    public int getJumlah() { 
-        return jumlah; 
+    public int getJumlah() {
+        return jumlah;
     }
 
-    public String getIdPesanan() { 
-        return idPesanan; 
+    public String getIdPesanan() {
+        return idPesanan;
     }
 
-    public String getIdPengguna() { 
-        return idPengguna; 
+    public String getIdPengguna() {
+        return idPengguna;
     }
 
-    public String getIdPemasok() { 
-        return idPemasok; 
+    public String getIdPemasok() {
+        return idPemasok;
     }
 
-    public LocalDate getTanggalMasuk() { 
-        return tanggalMasuk; 
+    public LocalDate getTanggalMasuk() {
+        return tanggalMasuk;
     }
 
-    public double getHarga() { 
-        return harga; 
+    public double getHarga() {
+        return harga;
     }
-    
-    @Override
-    public String toString() {
-        return "Pesan{" +
-                "idPesanan='" + idPesanan + '\'' +
-                "idPengguna='" + idPengguna + '\'' +
-                ", idBahan='" + idBahan + '\'' +
-                ", idPemasok='" + idPemasok + '\'' +
-                ", tanggalMasuk=" + tanggalMasuk +
-                ", jumlah=" + jumlah +
-                ", harga=" + harga +
-                '}';
+
+    public String getNamaBahan() {
+        return namaBahan;
+    }
+
+    public String getNamaPemasok() {
+        return namaPemasok;
     }
 }

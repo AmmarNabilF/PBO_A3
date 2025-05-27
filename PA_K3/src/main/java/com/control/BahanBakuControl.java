@@ -15,18 +15,28 @@ public class BahanBakuControl {
     public void tampilkanBahanBaku() {
         String sql = "SELECT * FROM tbbahanbaku";
         boolean found = false;
+        String format = "| %-10s | %-25s | %-6s |\n";
+        String line = "+------------+---------------------------+--------+";
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             System.out.println("Daftar Bahan Baku Tersedia:");
+            System.out.println(line);
+            System.out.printf(format, "ID Bahan", "Nama Bahan", "Stok");
+            System.out.println(line);
             while (rs.next()) {
-                BahanBaku bb = new BahanBaku(
+                BahanBaku bahan = new BahanBaku(
                         rs.getString("idBahan"),
                         rs.getString("namaBahan"),
                         rs.getInt("stok")
                 );
-                System.out.println(bb);
+                System.out.printf(format,
+                        bahan.getIdBahan(),
+                        bahan.getNamaBahan(),
+                        bahan.getStok()
+                );
                 found = true;
             }
+            System.out.println(line);
             if (!found) {
                 System.out.println("Data bahan baku kosong.");
             }

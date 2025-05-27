@@ -1,5 +1,6 @@
 package com.control;
 
+import com.model.Produk;
 import java.sql.*;
 import java.util.*;
 
@@ -7,6 +8,7 @@ import com.DB;
 
 public class ProdukControl {
     private Connection conn;
+    BahanBakuControl bahanControl = new BahanBakuControl();
 
     public ProdukControl() {
         DB db = new DB();
@@ -37,6 +39,7 @@ public class ProdukControl {
 
         boolean tambah = true;
         while (tambah) {
+            bahanControl.tampilkanBahanBaku();
             System.out.print("Masukkan ID Bahan: ");
             String idBahan = input.nextLine().trim();
             if (idBahan.isEmpty()) {
@@ -84,7 +87,7 @@ public class ProdukControl {
                 stmt.executeUpdate();
             }
 
-            // Simpan ke tbdetail dan tbpemakaian
+            // Simpan ke tbdetail dan update stok tbbahanbaku
             PemakaianControl pemakaianControl = new PemakaianControl();
             for (Map.Entry<String, Integer> entry : bahanMap.entrySet()) {
                 String idBahan = entry.getKey();
@@ -114,10 +117,18 @@ public class ProdukControl {
                         }
                     }
                 }
+                // Kurangi jumlah bahan dari tbbahanbaku
+                String updateStok = "UPDATE tbbahanbaku SET stok = stok - ? WHERE idBahan = ?";
+                try (PreparedStatement updateStokStmt = conn.prepareStatement(updateStok)) {
+                    updateStokStmt.setInt(1, jumlah);
+                    updateStokStmt.setString(2, idBahan);
+                    updateStokStmt.executeUpdate();
+                }
             }
 
-            // Catat pemakaian
+            // Simpan ke tbpemakaian
             pemakaianControl.simpanPemakaian(idPengguna, namaProduk, bahanMap);
+
             conn.commit();
             System.out.println("Produk berhasil dibuat.");
         } catch (SQLException e) {
@@ -136,17 +147,33 @@ public class ProdukControl {
         }
     }
 
-
     public void tampilkanProduk() {
         String sql = "SELECT * FROM tbproduk";
+        boolean found = false;
+        String format = "| %-10s | %-25s | %-6s |\n";
+        String line = "+------------+---------------------------+--------+";
         try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            System.out.println("=== Daftar Produk ===");
+            ResultSet rs = stmt.executeQuery(sql)) {
+            System.out.println("Daftar Produk:");
+            System.out.println(line);
+            System.out.printf(format, "ID Produk", "Nama Produk", "Jumlah");
+            System.out.println(line);
             while (rs.next()) {
-                String idProduk = rs.getString("idProduk");
-                String namaProduk = rs.getString("namaProduk");
-                int jumlah = rs.getInt("jumlah");
-                System.out.println("ID Produk: " + idProduk + ", Nama: " + namaProduk + ", Jumlah: " + jumlah);
+                Produk produk = new Produk(
+                    rs.getString("idProduk"),
+                    rs.getString("namaProduk"),
+                    rs.getInt("jumlah")
+                );
+                System.out.printf(format,
+                    produk.getIdProduk(),
+                    produk.getNamaProduk(),
+                    produk.getJumlah()
+                );
+                found = true;
+            }
+            System.out.println(line);
+            if (!found) {
+                System.out.println("Data produk kosong.");
             }
         } catch (SQLException e) {
             System.out.println("Gagal menampilkan produk: " + e.getMessage());
