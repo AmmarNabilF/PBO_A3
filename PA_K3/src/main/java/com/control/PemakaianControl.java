@@ -1,0 +1,74 @@
+package com.control;
+
+import com.model.Pemakaian;
+import com.DB;
+
+import java.sql.*;
+import java.util.Map;
+
+public class PemakaianControl {
+    private Connection conn;
+
+    public PemakaianControl() {
+        DB db = new DB();
+        conn = db.conn;
+    }
+
+    public void simpanPemakaian(String idPengguna, String namaProduk, Map<String, Integer> bahanMap) throws SQLException {
+        for (Map.Entry<String, Integer> entry : bahanMap.entrySet()) {
+            String idBahan = entry.getKey();
+            int jumlah = entry.getValue();
+
+            String checkSql = "SELECT * FROM tbpemakaian WHERE idBahan = ?";
+            try (PreparedStatement check = conn.prepareStatement(checkSql)) {
+                check.setString(1, idBahan);
+                ResultSet rs = check.executeQuery();
+
+                if (rs.next()) {
+                    String updateSql = "UPDATE tbpemakaian SET jumlah = jumlah + ? WHERE idBahan = ?";
+                    try (PreparedStatement update = conn.prepareStatement(updateSql)) {
+                        update.setInt(1, jumlah);
+                        update.setString(2, idBahan);
+                        update.executeUpdate();
+                    }
+                } else {
+                    String insertSql = "INSERT INTO tbpemakaian (idBahan, jumlah) VALUES (?, ?)";
+                    try (PreparedStatement insert = conn.prepareStatement(insertSql)) {
+                        insert.setString(1, idPengguna);
+                        insert.setString(2, idBahan);
+                        insert.setInt(3, jumlah);
+                        insert.executeUpdate();
+                    }
+                }
+            }
+        }
+    }
+
+    public java.util.List<Pemakaian> lihatRiwayatPemakaian() {
+        String sql = """
+            SELECT p.idBahan, b.namaBahan, p.jumlah
+            FROM tbpemakaian p
+            JOIN tbbahanbaku b ON p.idBahan = b.idBahan
+            ORDER BY p.idBahan
+            """;
+
+        java.util.List<Pemakaian> riwayat = new java.util.ArrayList<>();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Pemakaian pemakaian = new Pemakaian(
+                    rs.getString("idBahan"),
+                    rs.getInt("jumlah")
+                );
+                pemakaian.setIdBahan(rs.getString("idBahan"));
+                pemakaian.setNamaBahan(rs.getString("namaBahan"));
+                pemakaian.setJumlah(rs.getInt("jumlah"));
+                riwayat.add(pemakaian);
+            }
+        } catch (SQLException e) {
+            System.err.println("Gagal menampilkan riwayat pemakaian: " + e.getMessage());
+        }
+        return riwayat;
+    }
+}

@@ -3,8 +3,10 @@ import com.auth.auth;
 import com.control.BahanBakuControl;
 
 import com.control.PasokanController;
+import com.control.PemakaianControl;
 import com.model.BahanBaku;
 import com.model.Pasokan;
+import com.model.Pemakaian;
 import com.model.Produk;
 import com.model.TransaksiMasuk;
 import java.util.Scanner;
@@ -15,6 +17,7 @@ import com.model.Pemasok;
 import com.model.Pengguna;
 import com.model.Pesan;
 import com.control.PesanControl;
+import com.control.ProdukControl;
 
 public class Main {
     static void cs() {
@@ -439,7 +442,10 @@ public class Main {
         // DB db = new DB();
         // CrudProduk crudp = new CrudProduk();
         PesanControl pesanControl = new PesanControl();
+        ProdukControl produkControl = new ProdukControl();
+        PemakaianControl pemakaianControl = new PemakaianControl();
         int pilih;
+        String idProduk;
         boolean run = true;
         do {
             System.out.println("");
@@ -449,11 +455,11 @@ public class Main {
                                 [2] Kelola Produk     
                                 [3] Pesan Bahan Baku  
                                 [4] Lihat Riwayat Pesanan 
+                                [5] Lihat Pemakaian Bahan
                                 [0] Keluar            
                                ===========================""");
             System.out.print("Pilih menu: ");
             pilih = input.nextInt();
-            
             switch (pilih){
                 case 1:
                     BahanBakuControl crudb = new BahanBakuControl();
@@ -462,10 +468,46 @@ public class Main {
                     input.nextLine();
                     break;
                 case 2:
-                    // menuProduk(input, crudp);
+                    while (true) {
+                        System.out.println("\n=== MENU PRODUK ===");
+                        System.out.println("[1] Tambah Produk");
+                        System.out.println("[2] Lihat Produk");
+                        System.out.println("[3] Ubah Jumlah Produk");
+                        System.out.println("[4] Hapus Produk");
+                        System.out.println("[0] Kembali");
+                        System.out.print("Pilih menu: ");
+                        int pilihan = input.nextInt();
+                        input.nextLine(); // Clear the newline character
+                        
+                        if (pilihan == 0) {
+                            break; // Kembali ke menu utama
+                        }
+                        
+                        switch (pilihan) {
+                            case 1:
+                                produkControl.buatProduk(idPengguna, input);
+                                break;
+                            case 2:
+                                produkControl.tampilkanProduk();
+                                break;
+                            case 3:
+                                System.out.print("Masukkan ID Produk yang ingin diubah: ");
+                                idProduk = input.nextLine();
+                                System.out.println("Masukkan perubahan jumlah:");
+                                int jumlahBaru = input.nextInt();
+                                produkControl.ubahJumlahProduk(idProduk, jumlahBaru);
+                                break;
+                            case 4:
+                                System.out.print("Masukkan ID Produk yang ingin diubah: ");
+                                idProduk = input.nextLine();
+                                produkControl.hapusProduk(idProduk);
+                                break;
+                            default:
+                                System.out.println("Pilihan tidak valid.");
+                        }
+                    }
                     break;
                 case 3:
-                    pesanBahan(input);
                     System.out.println("\n=== PESAN BAHAN BAKU ===");
                     String idPesanan;
                     try {
@@ -507,6 +549,12 @@ public class Main {
                     System.out.println("\n=== RIWAYAT PESANAN ===");
                     pesanControl.tampilkanRiwayatPesanan(idPengguna);
                     break;
+                case 5:
+                    System.out.println("\n=== RIWAYAT PEMAKAIAN ===");
+                    pemakaianControl.lihatRiwayatPemakaian();
+                    for (Pemakaian pemakaian : pemakaianControl.lihatRiwayatPemakaian()) {
+                        System.out.println("Nama Bahan: " + pemakaian.getNamaBahan() + ", Jumlah: " + pemakaian.getJumlah());
+                    }
                 case 0:
                     run = false;
                     break;
