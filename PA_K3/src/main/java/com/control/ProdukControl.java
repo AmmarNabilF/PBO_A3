@@ -32,8 +32,14 @@ public class ProdukControl {
     public void buatProduk(String idPengguna, Scanner input) {
         String idProduk = generateIdProduk();
 
-        System.out.print("Masukkan nama produk: ");
-        String namaProduk = input.nextLine();
+        String namaProduk;
+        do {
+            System.out.print("Masukkan nama produk: ");
+            namaProduk = input.nextLine();
+            if (namaProduk.trim().isEmpty() || !namaProduk.matches("[a-zA-Z\\s]+")) {
+                System.out.println("Nama bahan tidak sesuai. Silakan coba lagi.");
+            }
+            } while (namaProduk.trim().isEmpty() || !namaProduk.matches("[a-zA-Z\\s]+"));
 
         Map<String, Integer> bahanMap = new LinkedHashMap<>();
 
@@ -42,23 +48,44 @@ public class ProdukControl {
             bahanControl.tampilkanBahanBaku();
             System.out.print("Masukkan ID Bahan: ");
             String idBahan = input.nextLine().trim();
-            if (idBahan.isEmpty()) {
+            if (idBahan.trim().isEmpty()) {
                 System.out.println("ID Bahan tidak boleh kosong.");
                 continue;
             }
 
-            System.out.print("Masukkan jumlah bahan yang digunakan: ");
-            while (!input.hasNextInt()) {
-                System.out.println("Masukkan angka yang valid.");
-                input.next(); // skip non-int
-            }
-            int jumlah = input.nextInt();
-            input.nextLine(); // Buang newline
+            int jumlah = -1;
+            String inputStr;
+            do {
+                System.out.print("Masukkan jumlah bahan yang digunakan: ");
+                inputStr = input.nextLine().trim();
+            
+                if (inputStr.isEmpty()) {
+                    System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
+                    continue;
+                }
+            
+                if (inputStr.matches("\\d+")) { 
+                    jumlah = Integer.parseInt(inputStr);
+                    if (jumlah < 0) {
+                        System.out.println("Stok tidak boleh negatif.");
+                    }
+                } else {
+                    System.out.println("Input tidak valid. Masukkan angka bulat (misal: 10).");
+                }
+            } while (jumlah < 0);
 
             bahanMap.put(idBahan, bahanMap.getOrDefault(idBahan, 0) + jumlah);
 
-            System.out.print("Tambah bahan lagi? (y/n): ");
-            String lanjut = input.nextLine().trim();
+            String lanjut;
+            do {
+                System.out.print("Tambah bahan lagi? (y/n): ");
+                lanjut = input.nextLine().trim();
+                if (lanjut.isEmpty()) {
+                    System.out.println("Input tidak boleh kosong. Silakan masukkan 'y' atau 'n'.");
+                } else if (!lanjut.equalsIgnoreCase("y") && !lanjut.equalsIgnoreCase("n")) {
+                    System.out.println("Input tidak valid. Masukkan hanya 'y' untuk ya atau 'n' untuk tidak.");
+                }
+            } while (!lanjut.equalsIgnoreCase("y") && !lanjut.equalsIgnoreCase("n"));
             tambah = lanjut.equalsIgnoreCase("y");
         }
 
@@ -66,14 +93,25 @@ public class ProdukControl {
             System.out.println("Tidak ada bahan yang dimasukkan. Gagal membuat produk.");
             return;
         }
-
+        int jumlahProduk = -1;
+        String inputStr;
+        do {
         System.out.print("Masukkan jumlah produk yang dihasilkan: ");
-        while (!input.hasNextInt()) {
-            System.out.println("Masukkan angka yang valid.");
-            input.next(); // skip non-int
+        inputStr = input.nextLine().trim();
+    
+        if (inputStr.isEmpty()) {
+            System.out.println("Input tidak boleh kosong. Silakan coba lagi.");
+            continue;
         }
-        int jumlahProduk = input.nextInt();
-        input.nextLine(); // Buang newline
+        if (inputStr.matches("\\d+")) { 
+            jumlahProduk = Integer.parseInt(inputStr);
+            if (jumlahProduk < 0) {
+                System.out.println("Stok tidak boleh negatif.");
+            }
+        } else {
+            System.out.println("Input tidak valid. Masukkan angka bulat (misal: 10).");
+        }
+        } while (jumlahProduk <= 0);
 
         try {
             conn.setAutoCommit(false);
