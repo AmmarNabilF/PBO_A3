@@ -128,7 +128,7 @@ public class ProdukControl {
             for (Map.Entry<String, Integer> entry : bahanMap.entrySet()) {
                 String idBahan = entry.getKey();
                 int jumlah = entry.getValue();
-                
+
                 String checkDetail = "SELECT * FROM tbdetail WHERE idProduk = ? AND idBahan = ?";
                 try (PreparedStatement check = conn.prepareStatement(checkDetail)) {
                     check.setString(1, idProduk);
@@ -226,6 +226,19 @@ public class ProdukControl {
             System.out.println("Gagal mengecek ID produk: " + e.getMessage());
             return false;
         }
+    }
+
+    public boolean cekIsiProduk() {
+        String sql = "SELECT COUNT(*) FROM tbproduk";
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println("Gagal mengecek isi produk: " + e.getMessage());
+        }
+        return false;
     }
 
     public void ubahJumlahProduk(String idProduk, int jumlahBaru) {

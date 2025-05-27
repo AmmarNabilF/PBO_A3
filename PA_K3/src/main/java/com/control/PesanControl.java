@@ -13,6 +13,19 @@ public class PesanControl {
         conn = db.conn;
     }
 
+    public boolean cekPasokanAda(){
+        String sql = "SELECT COUNT(*) FROM tbpasokan";
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println("Gagal mengecek pasokan: " + e.getMessage());
+        }
+        return false;
+    }
+
     public void tampilkanDaftarPasokan() {
         String sql = "SELECT p.idPasokan, p.namaBahan, p.hargaSatuan, p.stok, s.namaPemasok " +
                     "FROM tbpasokan p " +

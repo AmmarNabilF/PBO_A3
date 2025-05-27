@@ -288,7 +288,7 @@ public class Main {
                         } else {
                             System.out.println("Gagal mendaftar akun");
                         }
-                        return;
+                        continue menu;
                     }
                 }else if (pilihanDaftar == 0) {
                     cs();
@@ -394,11 +394,23 @@ public class Main {
                     cs();
                     break;
                 case 2:
+                    if (!crudpa.cekIsiPasokan()) {
+                        System.out.println("\nTidak ada pasokan yang tersedia.");
+                        lanjut();
+                        cs();
+                        break;
+                    }
                     crudpa.lihatPasokan();
                     lanjut();
                     cs();
                     break;
                 case 3:
+                    if (!crudpa.cekIsiPasokan()) {
+                        System.out.println("\nTidak ada pasokan yang tersedia untuk diubah.");
+                        lanjut();
+                        cs();
+                        break;
+                    }
                     crudpa.lihatPasokan();
                     System.out.println("\n=== UBAH PASOKAN ===");
                     String idUpdate;
@@ -465,6 +477,12 @@ public class Main {
                     cs();
                     break;
                 case 4:
+                    if (!crudpa.cekIsiPasokan()) {
+                        System.out.println("\nTidak ada pasokan yang tersedia untuk dihapus.");
+                        lanjut();
+                        cs();
+                        break;
+                    }
                     crudpa.lihatPasokan();
                     System.out.println("\n=== HAPUS PASOKAN ===");
                     String idDelete;
@@ -535,7 +553,6 @@ public class Main {
                                             [4] Hapus Produk         
                                             [0] Kembali              
                                            ==========================""");
-                        System.out.print("Pilih menu: ");
                         int pilihan;
                         do {
                             System.out.print("Pilih menu: ");
@@ -558,10 +575,20 @@ public class Main {
                                 lanjut();
                                 break;
                             case 2:
+                                if (!produkControl.cekIsiProduk()) {
+                                    System.out.println("\nTidak ada produk yang tersedia.");
+                                    lanjut();
+                                    break;
+                                }
                                 produkControl.tampilkanProduk();
                                 lanjut();
                                 break;
                             case 3:
+                                if (!produkControl.cekIsiProduk()) {
+                                    System.out.println("\nTidak ada produk yang tersedia untuk diubah.");
+                                    lanjut();
+                                    break;
+                                }
                                 do {
                                     produkControl.tampilkanProduk();
                                     System.out.println("\n=== UBAH JUMLAH PRODUK ===");
@@ -600,6 +627,12 @@ public class Main {
                             case 4:
                                 do {
                                     produkControl.tampilkanProduk();
+                                    if (!produkControl.cekIsiProduk()) {
+                                        System.out.println("Tidak ada produk yang tersedia untuk dihapus.");
+                                        idProduk = "";
+                                        lanjut();
+                                        break;
+                                    }
                                     System.out.println("\n=== HAPUS PRODUK ===");
                                     System.out.print("Masukkan ID Produk yang ingin dihapus: ");
                                     idProduk = input.nextLine().trim();
@@ -619,6 +652,11 @@ public class Main {
                     }
                     break;
                 case 3:
+                    if (!pesanControl.cekPasokanAda()) {
+                        System.out.println("\nTidak ada pasokan yang tersedia untuk dipesan.");
+                        lanjut();
+                        break;
+                    }
                     System.out.println("\n=== PESAN BAHAN BAKU ===");
                     String idPesanan;
                     try {

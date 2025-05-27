@@ -81,6 +81,20 @@ public class PasokanController {
         }
     }
 
+    public boolean cekIsiPasokan() {
+        String sql = "SELECT COUNT(*) FROM tbpasokan WHERE idPemasok = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, auth.getCurrentUserId());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println("Gagal mengecek isi pasokan: " + e.getMessage());
+        }
+        return false;
+    }
+
     public void updatePasokan(String idPasokan, String namaBaru, double hargaBaru, int stokBaru) {
         String sql = "UPDATE tbpasokan SET namaBahan = ?, hargaSatuan = ?, stok = ? WHERE idPasokan = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
